@@ -1,0 +1,6 @@
+cocos2d
+proj.win32
+build
+.cocos-project.json
+CMakeLists.txt
+proj.android
