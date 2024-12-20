@@ -8,7 +8,6 @@
 #include "Item.h"
 #include "player.h"
 #include "task.h"
-#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 using namespace std;
@@ -32,17 +31,21 @@ public:
     // 将物品添加到背包
     void addItem(item* it);
 
+
     // 获取背包内物品数量
     int getItemsNum()
     {
         return items_num;
     }
 
+    /**********************lq-edit**********************/
     // 解锁任务(type:1主线/0支线)
     void taskUnlock(const bool type, const int idx);
 
     // 设置任务状态为已完成(type:1主线/0支线)
     void taskFinish(const bool type, const int idx);
+
+    /************************end************************/
 private:
     // 初始化背包管理器
     bool init();
@@ -86,12 +89,6 @@ private:
     // 创建角色面板
     void createCharacterPanel();
 
-    // 绘制角色面板UI
-    void createCharacterPanelUI();
-
-    // 显示角色信息
-    void showCharacterInfo();
-
     // 点击物品栏事件
     void slot_click(Button* slot, int row, int col);
 
@@ -109,12 +106,6 @@ private:
 
     // 创建任务面板
     void createTaskPanel();
-
-    // 创建 ScrollView
-    void createScrollView(Vec2 position, vector<task*> myTask);
-
-    // 创建任务信息面板
-    void createTaskInfoPanel(vector<task*> myTask, int index);
 
     // 接受的主线任务
     vector<task*> myMainlineTask;

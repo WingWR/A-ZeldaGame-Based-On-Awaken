@@ -76,11 +76,10 @@ public:
 	void initSprite();
 
 	/* 释放攻击技能 */
+	// dir为方向:LEFT RIGHT UP DOWN,默认为DOWN
 	// 对于部分怪物,无方向一说:Monster1树妖
 	// opp为攻击对象
 	virtual Animate* Attack(int dir = DOWN, Creature* opp = nullptr);
-	virtual Animate* Attack(Creature* opp = nullptr);
-	int getDir() { return face_to; }
 
 	/* 受伤 */
 	virtual void Hurt();

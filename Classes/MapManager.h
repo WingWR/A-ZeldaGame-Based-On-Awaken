@@ -52,7 +52,10 @@ public:
 	int GetPlayerInWhichMap()const;
 
 	/*获取传送门的位置*/
-	Vec2 GetTeleportPosition(int MapID)const;  
+	Vec2 GetTeleportPosition(int MapID)const;
+
+	/*获取相应传送点是否已经被解锁*/
+	bool GetIsRegionRevealed(int MapID)const;
 
 	/*解锁小地图以及其相应传送点*/
 	void SetIsRegionRevealedTrue();

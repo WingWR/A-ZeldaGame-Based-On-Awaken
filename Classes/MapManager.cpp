@@ -105,11 +105,26 @@ bool MapManager::IsMoveable(const Vec2& Position) {
 
 Vec2 MapManager::GetTeleportPosition(int mapID)const {
 	// 获取指定地图的传送点坐标
-	if (IsRegionRevealed[PlayerInWhichMap] == false) {
-		// 如果传送点列表为空或玩家不在传送点列表中，则返回Vec2::ZERO
-		return Vec2::ZERO;
+	if (mapID < 0 || mapID >= (int)TeleportList.size()) {
+		return Vec2(-10000, -10000);
 	}
-	return TeleportList[PlayerInWhichMap];
+	if (mapID == 0) { //RebirthTemple
+		return TeleportList[0];
+	}
+	else if (mapID == 1) { //volcano
+		return TeleportList[1];
+	}
+	else if (mapID == 2) { //SnowyWinter
+		return TeleportList[2];
+	}
+	else if (mapID == 3) { //DeathDesert
+		return TeleportList[3];
+	}
+	else if (mapID == 4) { //BrightForest
+		return TeleportList[4];
+	}
+	else
+		return Vec2(-10000,-10000);
 }
 
 void MapManager::ReverseIsBlackFogVisible() {
@@ -123,7 +138,27 @@ void MapManager::SetIsRegionRevealedTrue() {
 	// 解锁小地图以及其相应传送点
 	if (IsRegionRevealed[PlayerInWhichMap] == false) {
 		IsRegionRevealed[PlayerInWhichMap] = true;
+		if (PlayerInWhichMap == 0) { //RebirthTemple
+			;
+		}
+		else if (PlayerInWhichMap == 1) { //volcano
+			IsRegionRevealed[6] = true;
+		}
+		else if (PlayerInWhichMap == 2) { //SnowyWinter
+			IsRegionRevealed[5] = true;
+		}
+		else if (PlayerInWhichMap == 3) { //DeathDesert
+			IsRegionRevealed[7] = true;
+		}
+		else if (PlayerInWhichMap == 4) { //BrightForest
+			IsRegionRevealed[8] = true;
+		}
 	}
+}
+
+bool MapManager::GetIsRegionRevealed(int MapID)const {
+	// 获取指定地图的区域是否被揭示
+	return IsRegionRevealed[MapID];
 }
 
 Vec2 MapManager::tiledMapPosToScenePos(const Vec2& tiledMapPos, int mapIndex) {
