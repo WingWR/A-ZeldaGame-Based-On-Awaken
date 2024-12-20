@@ -196,7 +196,6 @@ void MainGameScene::MicroCameraFollowPlayer() {
 
 void MainGameScene::UnlockMapTeleport() {
 	// ½âËø´«ËÍÃÅ
-	CCLOG("Unlock Map Teleport");
 	if (PLAYER->mySprite->getPosition().distance(_mapManager->GetTeleportPosition(_mapManager->GetPlayerInWhichMap())) < 70.0f 
 		&& _mapManager->GetIsRegionRevealed(_mapManager->GetPlayerInWhichMap()) == false) {
 		_mapManager->SetIsRegionRevealedTrue();
