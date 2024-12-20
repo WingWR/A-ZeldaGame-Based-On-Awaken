@@ -1,16 +1,13 @@
 #include "BagManager.h"
-#include "ui/CocosGUI.h"
 
-USING_NS_CC;
-using namespace ui;
-using namespace std;
-
+// 单例实例 
 BagManager* BagManager::_instance = nullptr;
 
+// 获取单例实例 
 BagManager* BagManager::getInstance()
 {
     // 如果实例不存在，创建一个新的实例
-    if (_instance == nullptr)
+    if (_instance == nullptr) 
     {
         _instance = new BagManager();  // 创建实例
         _instance->init();  // 初始化实例
@@ -18,52 +15,59 @@ BagManager* BagManager::getInstance()
     return _instance;  // 返回实例指针
 }
 
+// 构造函数
 BagManager::BagManager() : _isBagOpen(false), _bagPanel(nullptr)
 {
     for (int i = 0; i < 40; i++)
         items[i] = nullptr;
     items_num = 0;
-    //// 测试添加任务
-    //task* task1 = new task("Novice Task", "Pass the beginner's guide", 1, 0);
-    //myMainlineTask.push_back(task1);
-    //task* task2 = new task("Acquire a Weapon", "Defeat the guard with the sword and gain the iron sword", 0, 1);
-    //myLineQuest.push_back(task2);
-    //task1->isFinished = 1;
     // 将显示金币数量的标签置空
     coinsLabel = nullptr;
 }
 
+// 析构函数
 BagManager::~BagManager()
 {
-    if (_bagPanel)
+    if (_bagPanel) 
         _bagPanel->removeFromParent();
-    if (_bagBackground)
+    if (_bagBackground) 
         _bagBackground->release();
     if (_characterBackground)
         _characterBackground->release();
 }
 
+// 初始化背包管理器
 bool BagManager::init()
 {
-    if (!Node::init())
+    if (!Node::init()) 
         return false;  // 初始化失败
 
     // 创建背包面板，作为背包UI的容器
     _bagPanel = Node::create();
     this->addChild(_bagPanel);  // 将背包面板添加到当前节点
     _bagPanel->setVisible(false);  // 默认情况下背包是隐藏的
-
+    
     return true;  // 初始化成功
 }
 
+// 显示背包
 void BagManager::showBag(Player& _player)
 {
     player = _player;
+    player.x = _player.getXY().x;
+    player.y = _player.getXY().y;
     // 如果背包尚未打开，则创建并显示背包背景
     if (!_isBagOpen)
     {
         // 游戏暂停
-        Director::getInstance()->pause();
+        //Director::getInstance()->pause();
+
+        // 如果打开了任务面板，就关闭任务面板
+        if (_taskBackground)
+        {
+            _bagPanel->removeAllChildren();
+            _taskBackground = nullptr;
+        }
 
         // 创建背包背景
         createBagBackground();
@@ -82,12 +86,13 @@ void BagManager::showBag(Player& _player)
     }
 }
 
+// 隐藏背包
 void BagManager::hideBag(Player& _player)
 {
     if (_isBagOpen)
     {
         // 恢复游戏
-        Director::getInstance()->resume();
+        //Director::getInstance()->resume();
 
         _bagPanel->setVisible(false);  // 隐藏背包面板
         _bagPanel->removeAllChildren(); // 清除子节点
@@ -99,6 +104,7 @@ void BagManager::hideBag(Player& _player)
     }
 }
 
+// 创建打开任务面板按钮
 void BagManager::createTaskButton()
 {
     // 创建打开任务面板按钮
@@ -120,11 +126,12 @@ void BagManager::createTaskButton()
         });
 }
 
+// 创建任务面板
 void BagManager::createTaskPanel()
 {
     _bagPanel->setVisible(true);
     // 游戏暂停
-    Director::getInstance()->pause();
+    //Director::getInstance()->pause();
     // 设置任务面板背景图片
     _taskBackground = Sprite::create("Bag/task_background.png");
     _taskBackground->setPosition(Vec2(player.x, player.y));
@@ -156,25 +163,48 @@ void BagManager::createTaskPanel()
         showBag(player);
         });
     updateTaskUI();
-
+    
 }
+
+// 更新任务界面UI
 void BagManager::updateTaskUI()
 {
     // 显示支线任务
+    // 设置滚轮
+    createScrollView(Vec2(0, 40), myLineQuest);
+    // 添加支线任务标题
+    auto sideQuestLabel = Label::createWithTTF("My Side Quest", "fonts/arial.ttf", 16);
+    sideQuestLabel->setTextColor(Color4B(255, 215, 0, 255));
+    sideQuestLabel->setPosition(Vec2(_taskBackground->getContentSize().width / 2, 180));
+    _taskBackground->addChild(sideQuestLabel);
+
+    // 显示主线任务
+    // 设置滚轮
+    createScrollView(Vec2(0, 220), myMainlineTask);
+    // 添加支线任务标题
+    auto mainlineTaskLabel = Label::createWithTTF("My Mainline Task", "fonts/arial.ttf", 16);
+    mainlineTaskLabel->setTextColor(Color4B(255, 215, 0, 255));
+    mainlineTaskLabel->setPosition(Vec2(_taskBackground->getContentSize().width / 2, 360));
+    _taskBackground->addChild(mainlineTaskLabel);
+}
+
+// 创建 ScrollView
+void BagManager::createScrollView(Vec2 position, vector<task*> myTask)
+{
     // 创建 ScrollView
-    auto scrollView1 = ScrollView::create();
+    auto scrollView = ScrollView::create();
     // 设置滚动区域的大小，显示两个按钮
-    float scrollHeight1 = 2 * 50.0f + 30.0f;
-    scrollView1->setContentSize(Size(_taskBackground->getContentSize().width, scrollHeight1));
-    scrollView1->setPosition(Vec2(0, 40));  // 设置滚动区域的位置
-    scrollView1->setDirection(ScrollView::Direction::VERTICAL);  // 纵向滚动
-    scrollView1->setBounceEnabled(true);  // 启用回弹效果
-    scrollView1->setTouchEnabled(true);  // 启用触摸事件
-    _taskBackground->addChild(scrollView1);
+    float scrollHeight = 2 * 50.0f + 30.0f;
+    scrollView->setContentSize(Size(_taskBackground->getContentSize().width, scrollHeight));
+    scrollView->setPosition(position);  // 设置滚动区域的位置
+    scrollView->setDirection(ScrollView::Direction::VERTICAL);  // 纵向滚动
+    scrollView->setBounceEnabled(true);  // 启用回弹效果
+    scrollView->setTouchEnabled(true);  // 启用触摸事件
+    _taskBackground->addChild(scrollView);
 
     // 创建一个内容节点（容纳所有按钮）
     auto contentNode1 = Node::create();
-    scrollView1->addChild(contentNode1);
+    scrollView->addChild(contentNode1);
 
     const int taskCount = 10;  // 最多有10个任务按钮
     float buttonHeight = 50.0f;
@@ -188,7 +218,7 @@ void BagManager::updateTaskUI()
         taskButton->setPosition(Vec2(_taskBackground->getContentSize().width / 2, (taskCount - i - 0.5) * (buttonHeight + gap)));
         contentNode1->addChild(taskButton);
 
-        if (i >= myLineQuest.size())
+        if (i >= myTask.size())
         {
             // 添加任务标签
             auto taskLabel = Label::createWithTTF("Task " + std::to_string(i + 1), "fonts/arial.ttf", 16);
@@ -205,69 +235,13 @@ void BagManager::updateTaskUI()
         else
         {
             // 添加任务标签
-            auto taskLabel = Label::createWithTTF(myLineQuest[i]->taskName, "fonts/arial.ttf", 12);
+            auto taskLabel = Label::createWithTTF(myTask[i]->taskName, "fonts/arial.ttf", 12);
             taskLabel->setPosition(Vec2(taskButton->getContentSize().width / 2, taskButton->getContentSize().height / 2));
             taskLabel->setTextColor(Color4B(255, 215, 0, 255));
             taskButton->addChild(taskLabel);
             // 设置按钮点击事件
             taskButton->addClickEventListener([=](Ref* sender) {
-                // 打开物品信息面板
-                auto taskInfoBackground = Sprite::create("Bag/task_info_background.png");
-                float taskInfoBackground_x = _taskBackground->getPositionX() + _taskBackground->getContentSize().width / 2 + taskInfoBackground->getContentSize().width / 2;
-                float taskInfoBackground_y = _taskBackground->getPositionY() + _taskBackground->getContentSize().height / 2 - taskInfoBackground->getContentSize().height / 2;
-                taskInfoBackground->setPosition(Vec2(taskInfoBackground_x, taskInfoBackground_y));
-                _bagPanel->addChild(taskInfoBackground);
-
-                // 创建并显示任务名字
-                auto taskNameLabel = Label::createWithSystemFont(myLineQuest[i]->taskName, "Arial", 24);
-                // 设置字体颜色为金色 (RGB: 255, 215, 0)
-                taskNameLabel->setTextColor(Color4B(255, 215, 0, 255));
-                taskNameLabel->setPosition(Vec2(taskInfoBackground->getContentSize().width / 2, taskInfoBackground->getContentSize().height - 15));  // 放置在背景上方
-                taskInfoBackground->addChild(taskNameLabel);
-
-                // 创建并显示物品描述的 Label
-                auto taskDescriptionLabel = Label::createWithSystemFont(myLineQuest[i]->description, "Arial", 16);
-                // 设置锚点
-                taskDescriptionLabel->setAnchorPoint(Vec2(0, 1));
-                // 设置文本最大宽度为物品信息背景的宽度（可以适当留个边距）
-                float maxWidth = taskInfoBackground->getContentSize().width - 10;  // 留点左右边距
-                // 设置最大宽度和高度
-                taskDescriptionLabel->setDimensions(maxWidth, 0);
-                taskDescriptionLabel->setPosition(Vec2(10, taskInfoBackground->getContentSize().height - 40));  // 放置在背景上方
-                taskInfoBackground->addChild(taskDescriptionLabel);
-
-                // 显示任务进度
-                if (myLineQuest[i]->isFinished) // 任务完成
-                {
-                    auto taskProgressLabel = Label::createWithSystemFont("Finished", "Arial", 16);
-                    // 设置锚点
-                    taskProgressLabel->setAnchorPoint(Vec2(0, 0.5));
-                    // 设置文字颜色为绿色
-                    taskProgressLabel->setTextColor(Color4B(0, 255, 0, 255));
-                    taskProgressLabel->setPosition(15, 15);
-                    taskInfoBackground->addChild(taskProgressLabel);
-                }
-                else
-                {
-                    auto taskProgressLabel = Label::createWithSystemFont("Going", "Arial", 16);
-                    // 设置锚点
-                    taskProgressLabel->setAnchorPoint(Vec2(0, 0.5));
-                    // 设置文字颜色为金色
-                    taskProgressLabel->setTextColor(Color4B(255, 215, 0, 255));
-                    taskProgressLabel->setPosition(15, 15);
-                    taskInfoBackground->addChild(taskProgressLabel);
-                }
-
-                // 创建关闭按钮（×按钮）
-                auto closeButton = Button::create("Bag/close_button.png");
-                closeButton->setPosition(Vec2(taskInfoBackground->getContentSize().width, taskInfoBackground->getContentSize().height)); // 右上角位置
-                closeButton->addClickEventListener([=](Ref* sender) {
-                    // 点击×按钮时移除 itemInfoBackground
-                    taskInfoBackground->removeFromParent();  // 从父节点移除
-                    });
-
-                // 将关闭按钮添加到背景中
-                taskInfoBackground->addChild(closeButton);
+                createTaskInfoPanel(myTask, i);
                 });
         }
     }
@@ -275,136 +249,72 @@ void BagManager::updateTaskUI()
     contentNode1->setContentSize(Size(_taskBackground->getContentSize().width, taskCount * (buttonHeight + gap) + 5));
 
     // 设置 ScrollView 内部容器的大小
-    scrollView1->setInnerContainerSize(contentNode1->getContentSize());
-
-    // 添加支线任务标题
-    auto sideQuestLabel = Label::createWithTTF("My Side Quest", "fonts/arial.ttf", 16);
-    sideQuestLabel->setTextColor(Color4B(255, 215, 0, 255));
-    sideQuestLabel->setPosition(Vec2(_taskBackground->getContentSize().width / 2, scrollHeight1 + 50));
-    _taskBackground->addChild(sideQuestLabel);
-
-
-
-    // 显示主线任务
-    auto scrollView2 = ScrollView::create();
-    // 设置滚动区域的大小，显示两个按钮
-    float scrollHeight2 = 2 * 50.0f + 30.0f;
-    scrollView2->setContentSize(Size(_taskBackground->getContentSize().width, scrollHeight2));
-    scrollView2->setPosition(Vec2(0, 100 + scrollHeight1));  // 设置滚动区域的位置
-    scrollView2->setDirection(ScrollView::Direction::VERTICAL);  // 纵向滚动
-    scrollView2->setBounceEnabled(true);  // 启用回弹效果
-    scrollView2->setTouchEnabled(true);  // 启用触摸事件
-    _taskBackground->addChild(scrollView2);
-
-    // 创建一个内容节点（容纳所有按钮）
-    auto contentNode2 = Node::create();
-    scrollView2->addChild(contentNode2);
-
-    // 创建任务按钮
-    for (int i = 0; i < taskCount; ++i)
-    {
-        // 创建任务按钮
-        auto taskButton = Button::create("Bag/taskName.png");
-        taskButton->setPosition(Vec2(_taskBackground->getContentSize().width / 2, (taskCount - i - 0.5) * (buttonHeight + gap)));
-        contentNode2->addChild(taskButton);
-
-        if (i >= myMainlineTask.size())
-        {
-            // 添加任务标签
-            auto taskLabel = Label::createWithTTF("Task " + std::to_string(i + 1), "fonts/arial.ttf", 16);
-            taskLabel->setPosition(Vec2(taskButton->getContentSize().width / 2, taskButton->getContentSize().height / 2));
-            taskButton->addChild(taskLabel);
-
-            // 设置按钮点击事件
-            taskButton->addClickEventListener([](Ref* sender) {});
-            // 表示任务未解锁
-            auto lock = Button::create("Bag/lock.png");
-            lock->setPosition(Vec2(taskButton->getContentSize().width, taskButton->getContentSize().height));
-            taskButton->addChild(lock);
-        }
-        else
-        {
-            // 添加任务标签
-            auto taskLabel = Label::createWithTTF(myMainlineTask[i]->taskName, "fonts/arial.ttf", 12);
-            taskLabel->setPosition(Vec2(taskButton->getContentSize().width / 2, taskButton->getContentSize().height / 2));
-            taskLabel->setTextColor(Color4B(255, 215, 0, 255));
-            taskButton->addChild(taskLabel);
-            // 设置按钮点击事件
-            taskButton->addClickEventListener([=](Ref* sender) {
-                // 打开任务信息面板
-                auto taskInfoBackground = Sprite::create("Bag/task_info_background.png");
-                float taskInfoBackground_x = _taskBackground->getPositionX() + _taskBackground->getContentSize().width / 2 + taskInfoBackground->getContentSize().width / 2;
-                float taskInfoBackground_y = _taskBackground->getPositionY() + _taskBackground->getContentSize().height / 2 - taskInfoBackground->getContentSize().height / 2;
-                taskInfoBackground->setPosition(Vec2(taskInfoBackground_x, taskInfoBackground_y));
-                _bagPanel->addChild(taskInfoBackground);
-
-                // 创建并显示任务名字
-                auto taskNameLabel = Label::createWithSystemFont(myMainlineTask[i]->taskName, "Arial", 24);
-                // 设置字体颜色为金色 (RGB: 255, 215, 0)
-                taskNameLabel->setTextColor(Color4B(255, 215, 0, 255));
-                taskNameLabel->setPosition(Vec2(taskInfoBackground->getContentSize().width / 2, taskInfoBackground->getContentSize().height - 15));  // 放置在背景上方
-                taskInfoBackground->addChild(taskNameLabel);
-
-                // 创建并显示物品描述的 Label
-                auto taskDescriptionLabel = Label::createWithSystemFont(myMainlineTask[i]->description, "Arial", 16);
-                // 设置锚点
-                taskDescriptionLabel->setAnchorPoint(Vec2(0, 1));
-                // 设置文本最大宽度为物品信息背景的宽度（可以适当留个边距）
-                float maxWidth = taskInfoBackground->getContentSize().width - 10;  // 留点左右边距
-                // 设置最大宽度和高度
-                taskDescriptionLabel->setDimensions(maxWidth, 0);
-                taskDescriptionLabel->setPosition(Vec2(10, taskInfoBackground->getContentSize().height - 40));  // 放置在背景上方
-                taskInfoBackground->addChild(taskDescriptionLabel);
-
-                // 显示任务进度
-                if (myMainlineTask[i]->isFinished) // 任务完成
-                {
-                    auto taskProgressLabel = Label::createWithSystemFont("Finished", "Arial", 16);
-                    // 设置锚点
-                    taskProgressLabel->setAnchorPoint(Vec2(0, 0.5));
-                    // 设置文字颜色为绿色
-                    taskProgressLabel->setTextColor(Color4B(0, 255, 0, 255));
-                    taskProgressLabel->setPosition(15, 15);
-                    taskInfoBackground->addChild(taskProgressLabel);
-                }
-                else
-                {
-                    auto taskProgressLabel = Label::createWithSystemFont("Going", "Arial", 16);
-                    // 设置锚点
-                    taskProgressLabel->setAnchorPoint(Vec2(0, 0.5));
-                    // 设置文字颜色为金色
-                    taskProgressLabel->setTextColor(Color4B(255, 215, 0, 255));
-                    taskProgressLabel->setPosition(15, 15);
-                    taskInfoBackground->addChild(taskProgressLabel);
-                }
-
-                // 创建关闭按钮（×按钮）
-                auto closeButton = Button::create("Bag/close_button.png");
-                closeButton->setPosition(Vec2(taskInfoBackground->getContentSize().width, taskInfoBackground->getContentSize().height)); // 右上角位置
-                closeButton->addClickEventListener([=](Ref* sender) {
-                    // 点击×按钮时移除 itemInfoBackground
-                    taskInfoBackground->removeFromParent();  // 从父节点移除
-                    });
-
-                // 将关闭按钮添加到背景中
-                taskInfoBackground->addChild(closeButton);
-                });
-        }
-    }
-
-    // 设置内容区域高度（内容区域的总高度要大于滚动区域的高度）
-    contentNode2->setContentSize(Size(_taskBackground->getContentSize().width, taskCount * (buttonHeight + gap) + 5));
-
-    // 设置 ScrollView 内部容器的大小
-    scrollView2->setInnerContainerSize(contentNode2->getContentSize());
-
-    // 添加支线任务标题
-    auto mainlineTaskLabel = Label::createWithTTF("My Mainline Task", "fonts/arial.ttf", 16);
-    mainlineTaskLabel->setTextColor(Color4B(255, 215, 0, 255));
-    mainlineTaskLabel->setPosition(Vec2(_taskBackground->getContentSize().width / 2, scrollHeight2 + scrollHeight1 + 110));
-    _taskBackground->addChild(mainlineTaskLabel);
+    scrollView->setInnerContainerSize(contentNode1->getContentSize());
 }
 
+// 创建任务信息面板
+void BagManager::createTaskInfoPanel(vector<task*> myTask, int index)
+{
+    // 打开任务信息面板
+    auto taskInfoBackground = Sprite::create("Bag/task_info_background.png");
+    float taskInfoBackground_x = _taskBackground->getPositionX() + _taskBackground->getContentSize().width / 2 + taskInfoBackground->getContentSize().width / 2;
+    float taskInfoBackground_y = _taskBackground->getPositionY() + _taskBackground->getContentSize().height / 2 - taskInfoBackground->getContentSize().height / 2;
+    taskInfoBackground->setPosition(Vec2(taskInfoBackground_x, taskInfoBackground_y));
+    _bagPanel->addChild(taskInfoBackground);
+
+    // 创建并显示任务名字
+    auto taskNameLabel = Label::createWithSystemFont(myTask[index]->taskName, "Arial", 24);
+    // 设置字体颜色为金色 (RGB: 255, 215, 0)
+    taskNameLabel->setTextColor(Color4B(255, 215, 0, 255));
+    taskNameLabel->setPosition(Vec2(taskInfoBackground->getContentSize().width / 2, taskInfoBackground->getContentSize().height - 15));  // 放置在背景上方
+    taskInfoBackground->addChild(taskNameLabel);
+
+    // 创建并显示物品描述的 Label
+    auto taskDescriptionLabel = Label::createWithSystemFont(myTask[index]->description, "Arial", 16);
+    // 设置锚点
+    taskDescriptionLabel->setAnchorPoint(Vec2(0, 1));
+    // 设置文本最大宽度为物品信息背景的宽度（可以适当留个边距）
+    float maxWidth = taskInfoBackground->getContentSize().width - 10;  // 留点左右边距
+    // 设置最大宽度和高度
+    taskDescriptionLabel->setDimensions(maxWidth, 0);
+    taskDescriptionLabel->setPosition(Vec2(10, taskInfoBackground->getContentSize().height - 40));  // 放置在背景上方
+    taskInfoBackground->addChild(taskDescriptionLabel);
+
+    // 显示任务进度
+    if (myTask[index]->isFinished) // 任务完成
+    {
+        auto taskProgressLabel = Label::createWithSystemFont("Finished", "Arial", 16);
+        // 设置锚点
+        taskProgressLabel->setAnchorPoint(Vec2(0, 0.5));
+        // 设置文字颜色为绿色
+        taskProgressLabel->setTextColor(Color4B(0, 255, 0, 255));
+        taskProgressLabel->setPosition(15, 15);
+        taskInfoBackground->addChild(taskProgressLabel);
+    }
+    else
+    {
+        auto taskProgressLabel = Label::createWithSystemFont("Going", "Arial", 16);
+        // 设置锚点
+        taskProgressLabel->setAnchorPoint(Vec2(0, 0.5));
+        // 设置文字颜色为金色
+        taskProgressLabel->setTextColor(Color4B(255, 215, 0, 255));
+        taskProgressLabel->setPosition(15, 15);
+        taskInfoBackground->addChild(taskProgressLabel);
+    }
+
+    // 创建关闭按钮（×按钮）
+    auto closeButton = Button::create("Bag/close_button.png");
+    closeButton->setPosition(Vec2(taskInfoBackground->getContentSize().width, taskInfoBackground->getContentSize().height)); // 右上角位置
+    closeButton->addClickEventListener([=](Ref* sender) {
+        // 点击×按钮时移除 itemInfoBackground
+        taskInfoBackground->removeFromParent();  // 从父节点移除
+        });
+
+    // 将关闭按钮添加到背景中
+    taskInfoBackground->addChild(closeButton);
+}
+
+// 更新背包UI
 void BagManager::updateBagUI()
 {
     // 设置物品栏格子尺寸和间隔
@@ -470,9 +380,9 @@ void BagManager::createBagBackground()
 // 显示金币数量
 void BagManager::showcoins()
 {
-    // 显示当前人物的金币数
-    // 如果金币标签已经存在，更新其内容；否则，创建新的金币标签
-    if (coinsLabel)
+   // 显示当前人物的金币数
+   // 如果金币标签已经存在，更新其内容；否则，创建新的金币标签
+    if (coinsLabel) 
         // 更新现有标签的内容
         coinsLabel->setString(to_string(player.coins));
     else
@@ -493,47 +403,16 @@ void BagManager::showcoins()
 // 创建角色面板
 void BagManager::createCharacterPanel()
 {
-    // 设置角色面板背景
-    _characterBackground = Sprite::create("Bag/character_background.png");
-    float characterBackground_x = _bagBackground->getPositionX() + _bagBackground->getContentSize().width / 2 + _characterBackground->getContentSize().width / 2;
-    float characterBackground_y = _bagBackground->getPositionY() + _bagBackground->getContentSize().height / 2 - _characterBackground->getContentSize().height / 2;
-    _characterBackground->setPosition(Vec2(characterBackground_x, characterBackground_y));
-    _bagPanel->addChild(_characterBackground, -1);
+    // 绘制角色面板UI
+    createCharacterPanelUI();
 
-    // 创建角色面板标题
-    auto characterTitleLabel = Label::createWithTTF("MY CHARACTER", "fonts/arial.ttf", 32);
-    characterTitleLabel->setPosition(Vec2(_characterBackground->getContentSize().width / 2, _characterBackground->getContentSize().height - 20));
-    // 设置字体颜色为金色 (RGB: 255, 215, 0)
-    characterTitleLabel->setTextColor(Color4B(255, 215, 0, 255));
-    _characterBackground->addChild(characterTitleLabel);
-
-    // 绘制边框
-    float borderWidth = _characterBackground->getContentSize().width / 2;
-    float borderHeight = _characterBackground->getContentSize().height / 2;
-
-    Vec2 borderPosition = Vec2(borderWidth, borderHeight);
-
-    auto drawNode = DrawNode::create();
-    _characterBackground->addChild(drawNode);
-
-    drawNode->drawRect(
-        Vec2(borderPosition.x - borderWidth / 2, borderPosition.y - borderHeight / 2),
-        Vec2(borderPosition.x + borderWidth / 2, borderPosition.y + borderHeight / 2),
-        Color4F(1.0f, 1.0f, 1.0f, 1.0f)
-    );
-
-    // 将角色图像放置在边框中
-    player.mySprite->setVisible(true); // 设置为可见
-    player.mySprite->setPosition(Vec2(_characterBackground->getContentSize().width / 2, _characterBackground->getContentSize().height / 2)); // 放置在边框中心
-    if (player.mySprite->getParent() != nullptr)
-    { // 如果有父节点，就先保存子节点，再从父节点移除
-        player.mySprite->retain();
-        player.mySprite->removeFromParent();
-    }
-    _characterBackground->addChild(player.mySprite);
+    // 显示角色信息
+    showCharacterInfo();
 
     // 在角色面板两边添加装备栏
-
+    float borderWidth = _characterBackground->getContentSize().width / 2;
+    float borderHeight = _characterBackground->getContentSize().height / 2;
+    Vec2 borderPosition = Vec2(borderWidth, borderHeight);
     // 武器
     auto button1 = Button::create("Bag/item_slot.png");// 添加按钮
     button1->setPosition(Vec2(borderPosition.x - borderWidth / 2 - 40, borderPosition.y + borderHeight / 2 - 30));
@@ -544,13 +423,13 @@ void BagManager::createCharacterPanel()
     button1->addChild(label1);
 
     // 获取玩家的武器图像并设置到武器栏
-    if (player._weapon != nullptr)
+    if (player._weapon != nullptr) 
     {
         // 获取武器图像并设置
         auto weaponImage = player._weapon->image;
         weaponImage->retain(); // 保证图像对象不被销毁
         weaponImage->removeFromParent(); // 移除当前的父节点
-        if (weaponImage != nullptr)
+        if (weaponImage != nullptr) 
         {
             weaponImage->setPosition(Vec2(button1->getContentSize().width / 2, button1->getContentSize().height / 2));
             button1->addChild(weaponImage);  // 将图像添加到武器栏按钮中
@@ -685,7 +564,54 @@ void BagManager::createCharacterPanel()
         }
         });
     button4->addChild(closeButton4);
+}
 
+// 绘制角色面板UI
+void BagManager::createCharacterPanelUI()
+{
+    // 设置角色面板背景
+    _characterBackground = Sprite::create("Bag/character_background.png");
+    float characterBackground_x = _bagBackground->getPositionX() + _bagBackground->getContentSize().width / 2 + _characterBackground->getContentSize().width / 2;
+    float characterBackground_y = _bagBackground->getPositionY() + _bagBackground->getContentSize().height / 2 - _characterBackground->getContentSize().height / 2;
+    _characterBackground->setPosition(Vec2(characterBackground_x, characterBackground_y));
+    _bagPanel->addChild(_characterBackground, -1);
+
+    // 创建角色面板标题
+    auto characterTitleLabel = Label::createWithTTF("MY CHARACTER", "fonts/arial.ttf", 32);
+    characterTitleLabel->setPosition(Vec2(_characterBackground->getContentSize().width / 2, _characterBackground->getContentSize().height - 20));
+    // 设置字体颜色为金色 (RGB: 255, 215, 0)
+    characterTitleLabel->setTextColor(Color4B(255, 215, 0, 255));
+    _characterBackground->addChild(characterTitleLabel);
+
+    // 绘制边框
+    float borderWidth = _characterBackground->getContentSize().width / 2;
+    float borderHeight = _characterBackground->getContentSize().height / 2;
+
+    Vec2 borderPosition = Vec2(borderWidth, borderHeight);
+
+    auto drawNode = DrawNode::create();
+    _characterBackground->addChild(drawNode);
+
+    drawNode->drawRect(
+        Vec2(borderPosition.x - borderWidth / 2, borderPosition.y - borderHeight / 2),
+        Vec2(borderPosition.x + borderWidth / 2, borderPosition.y + borderHeight / 2),
+        Color4F(1.0f, 1.0f, 1.0f, 1.0f)
+    );
+
+    // 将角色图像放置在边框中
+    player.mySprite->setVisible(true); // 设置为可见
+    player.mySprite->setPosition(Vec2(_characterBackground->getContentSize().width / 2, _characterBackground->getContentSize().height / 2)); // 放置在边框中心
+    if (player.mySprite->getParent() != nullptr)
+    { // 如果有父节点，就先保存子节点，再从父节点移除
+        player.mySprite->retain();
+        player.mySprite->removeFromParent();
+    }
+    _characterBackground->addChild(player.mySprite);
+}
+
+// 显示角色信息
+void BagManager::showCharacterInfo()
+{
     //显示角色的属性、HP、MP
     // 属性
     string PlayerElementType;
@@ -701,7 +627,10 @@ void BagManager::createCharacterPanel()
         PlayerElementType = "Grass";
         break;
     case 3:
-        PlayerElementType = "Water";
+        PlayerElementType = "Ice";
+        break;
+    case 4:
+        PlayerElementType = "Rock";
         break;
     }
     string player_elementType = "ElementType: " + PlayerElementType;
@@ -717,13 +646,13 @@ void BagManager::createCharacterPanel()
     characterHP->setAnchorPoint(Vec2(0, 0.5));
     characterHP->setPosition(Vec2(1, 320));
     _characterBackground->addChild(characterHP);
-    // MP
-    string player_MP = "MP: " + to_string(player.current_mp);
-    auto characterMP = Label::createWithTTF(player_MP, "fonts/arial.ttf", 16);
+    // 等级
+    string player_level = "level: " + to_string(player.level);
+    auto characterLevel = Label::createWithTTF(player_level, "fonts/arial.ttf", 16);
     // 设置锚点，从左边开始
-    characterMP->setAnchorPoint(Vec2(0, 0.5));
-    characterMP->setPosition(Vec2(1, 300));
-    _characterBackground->addChild(characterMP);
+    characterLevel->setAnchorPoint(Vec2(0, 0.5));
+    characterLevel->setPosition(Vec2(1, 300));
+    _characterBackground->addChild(characterLevel);
 
     // 显示角色的攻击力、防御力、速度
     // 攻击力
@@ -864,7 +793,7 @@ void BagManager::slot_click(Button* slot, int row, int col)
                 if (player.coins >= equipmentNeedsUpgraded->equipment_cost)
                 {
                     // 角色金币数减少
-                    player.coins -= equipmentNeedsUpgraded->equipment_cost;
+                        player.coins -= equipmentNeedsUpgraded->equipment_cost;
                     // 更新显示金币数量
                     showcoins();
                     // 武器升级，增加数值和升级消耗
@@ -879,7 +808,7 @@ void BagManager::slot_click(Button* slot, int row, int col)
                 });
             itemInfoBackground->addChild(upgradeButton);
             // 为按钮添加文字
-            auto equipmentUpgraddeLabel = Label::createWithSystemFont("upgrade", "Arial", 16);
+            auto equipmentUpgraddeLabel = Label::createWithSystemFont("upgrade", "Arial", 16); 
             equipmentUpgraddeLabel->setPosition(Vec2(upgradeButton->getContentSize().width / 2, upgradeButton->getContentSize().height / 2)); // 设置位置
             upgradeButton->addChild(equipmentUpgraddeLabel);
         }
@@ -1005,21 +934,8 @@ void BagManager::equipItem(int index)
 
 }
 
-/**********************lq-edit**********************/
 // 解锁任务(type:1主线/0支线)
 void BagManager::taskUnlock(const bool type, const int idx) {
-    task* Mtask1 = new task("Task 1", "This is the 1st task.", 1, 0);
-    task* Mtask2 = new task("Task 2", "This is the 2nd task.", 1, 0);
-    task* Mtask3 = new task("Task 3", "This is the 3rd task.", 1, 0);
-    task* Mtask4 = new task("Task 4", "This is the 4th task.", 1, 0);
-    task* Mtask5 = new task("Final Task", "This is the 5th task.", 1, 0);
-
-    task* Ltask1 = new task("Task 1", "This is the 1st task.", 0, 0);
-    task* Ltask2 = new task("Task 2", "This is the 2nd task.", 0, 0);
-    task* Ltask3 = new task("Task 3", "This is the 3rd task.", 0, 0);
-    task* Ltask4 = new task("Task 4", "This is the 4th task.", 0, 0);
-    task* Ltask5 = new task("Task 5", "This is the 5th task.", 0, 0);
-
     if (type) {
         switch (idx) {
         case 1:
@@ -1062,14 +978,16 @@ void BagManager::taskUnlock(const bool type, const int idx) {
             break;
         }
     }
+
+
 }
 
-// 设置任务状态为已完成(type:1主线/0支线)
+
+/* 设置任务状态为已完成 */
+// type:1主线/0支线,idx为人物编号
 void BagManager::taskFinish(const bool type, const int idx) {
     if (type)
-        myMainlineTask[idx]->isFinished = true;
+        myMainlineTask[idx-1]->isFinished = true;
     else
-        myLineQuest[idx]->isFinished = true;
+        myLineQuest[idx-1]->isFinished = true;
 }
-
-/************************end************************/

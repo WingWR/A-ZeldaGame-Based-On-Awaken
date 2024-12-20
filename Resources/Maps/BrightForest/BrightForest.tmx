@@ -845,23 +845,25 @@
   <object id="113" x="1504.67" y="447.333" width="31.3333" height="28">
    <properties>
     <property name="Height" type="float" value="28"/>
-    <property name="Width" type="float" value="31.33"/>
+    <property name="Width" type="float" value="31.3333"/>
     <property name="X" type="float" value="1504.67"/>
-    <property name="Y" type="float" value="447.33"/>
+    <property name="Y" type="float" value="447.333"/>
    </properties>
   </object>
   <object id="114" x="1568" y="449.333" width="31.3333" height="27.3333">
    <properties>
-    <property name="Height" type="float" value="27.33"/>
-    <property name="Width" type="float" value="31.33"/>
+    <property name="Height" type="float" value="27.3333"/>
+    <property name="Width" type="float" value="31.3333"/>
     <property name="X" type="float" value="1568"/>
-    <property name="Y" type="float" value="449.33"/>
+    <property name="Y" type="float" value="449.333"/>
    </properties>
   </object>
   <object id="115" type="TeleportPoint" x="1550.67" y="391.333">
    <properties>
+    <property name="Height" type="float" value="0"/>
+    <property name="Width" type="float" value="0"/>
     <property name="X" type="float" value="1550.67"/>
-    <property name="Y" type="float" value="391.33"/>
+    <property name="Y" type="float" value="391.333"/>
    </properties>
    <point/>
   </object>

@@ -244,7 +244,8 @@ void LearningScene::learnAttack_2() {
 void LearningScene::learnChat_1() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     /* ¼ÓÈëNPC */
-    CHATNPC = new NPC("npc0", visibleSize.width / 2, visibleSize.height / 2, 1.0f, this, LEARNER, nullptr);
+    CHATNPC = new NPC("npc0", visibleSize.width / 2 - 250, visibleSize.height / 2, 1.0f, this, LEARNER, nullptr);
+    LEARNER->editSizeOffset(Size(45,110),Vec2(0,50));
     /* titleTxt */
     auto titleTxt = Label::createWithTTF("3.Chat", "fonts/KuaiLe_Chinese.ttf", 60);
     titleTxt->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - 150));
@@ -277,6 +278,15 @@ void LearningScene::learnChat_1() {
 }
 
 void LearningScene::learnChat_2() {
+    // ¼à²ânpcÊÇ·ñÔÚÓÐÐ§´¥·¢·¶Î§ÄÚ
+    this->schedule([=](float dt) {
+        CHATNPC->update();
+        }, 0.1f, "npc_check_scheduler");
+    // ¼ì²âÊÇ·ñÅö×²
+    this->schedule([=](float dt) {
+        LEARNER->preventOverlap(LEARNER, CHATNPC);
+        }, 0.001f, "player_check_collision_scheduler");
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     /* titleTxt */
     auto titleTxt = Label::createWithTTF("Now have a try!", "fonts/KuaiLe_Chinese.ttf", 60);
@@ -321,6 +331,9 @@ void LearningScene::learnChat_2() {
         // È¡Ïû¼üÅÌ¼àÌý
         _eventDispatcher->removeEventListener(listener_chat);
         listener_chat = nullptr; 
+        // È¡Ïû¼à²â
+        this->unschedule("player_check_collision_scheduler");
+        this->unschedule("npc_check_scheduler");
         // ÏÂÒ»²½
         this->learnBag_1();
         });
@@ -444,50 +457,40 @@ void LearningScene::finish() {
 
 /* ¼üÅÌ¼àÌý:Move */
 void LearningScene::MoveKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-	Vec2 moveBy;
-	int speed = 50;
 	/* ÒÆ¶¯:W/S/A/D */
 	if (keyCode == EventKeyboard::KeyCode::KEY_W) {
-		moveBy = Vec2(0, speed);
-		Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[0]) {
             isKeyPressed[0] = true;
-            LEARNER->Move(UP);
+            LEARNER->learnMove(UP);
             this->schedule([&](float dt) {
-                LEARNER->Move(UP);
+                LEARNER->learnMove(UP);
                 }, 0.8f, "MoveUP");
         }
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_S) {
-		moveBy = Vec2(0, -speed);
-		Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[1]) {
             isKeyPressed[1] = true;
-            LEARNER->Move(DOWN);
+            LEARNER->learnMove(DOWN);
             this->schedule([&](float dt) {
-                LEARNER->Move(DOWN);
+                LEARNER->learnMove(DOWN);
                 }, 0.8f, "MoveDOWN");
         }
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_A) {
-		moveBy = Vec2(-speed, 0);
-		Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[2]) {
             isKeyPressed[2] = true;
-            LEARNER->Move(LEFT);
+            LEARNER->learnMove(LEFT);
             this->schedule([&](float dt) {
-                LEARNER->Move(LEFT);
+                LEARNER->learnMove(LEFT);
                 }, 0.8f, "MoveLEFT");
         }
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D) {
-		moveBy = Vec2(speed, 0);
-		Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[3]) {
             isKeyPressed[3] = true;
-            LEARNER->Move(RIGHT);
+            LEARNER->learnMove(RIGHT);
             this->schedule([&](float dt) {
-                LEARNER->Move(RIGHT);
+                LEARNER->learnMove(RIGHT);
                 }, 0.8f, "MoveRIGHT");
         }
 	}	
@@ -526,118 +529,106 @@ void LearningScene::KeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 
 /* ¼üÅÌ¼àÌý:Move+Atk */
 void LearningScene::KeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-    Vec2 moveBy;
-    int speed = 50;
-
     /* ÒÆ¶¯:W/S/A/D */
     if (keyCode == EventKeyboard::KeyCode::KEY_W) {
-        moveBy = Vec2(0, speed);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[0]) {
             isKeyPressed[0] = true;
-            LEARNER->Move(UP);
+            LEARNER->learnMove(UP);
             this->schedule([&](float dt) {
-                LEARNER->Move(UP);
+                LEARNER->learnMove(UP);
                 }, 0.8f, "MoveUP");
         }
     }
     else if (keyCode == EventKeyboard::KeyCode::KEY_S) {
-        moveBy = Vec2(0, -speed);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[1]) {
             isKeyPressed[1] = true;
-            LEARNER->Move(DOWN);
+            LEARNER->learnMove(DOWN);
             this->schedule([&](float dt) {
-                LEARNER->Move(DOWN);
+                LEARNER->learnMove(DOWN);
                 }, 0.8f, "MoveDOWN");
         }
     }
     else if (keyCode == EventKeyboard::KeyCode::KEY_A) {
-        moveBy = Vec2(-speed, 0);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[2]) {
             isKeyPressed[2] = true;
-            LEARNER->Move(LEFT);
+            LEARNER->learnMove(LEFT);
             this->schedule([&](float dt) {
-                LEARNER->Move(LEFT);
+                LEARNER->learnMove(LEFT);
                 }, 0.8f, "MoveLEFT");
         }
     }
     else if (keyCode == EventKeyboard::KeyCode::KEY_D) {
-        moveBy = Vec2(speed, 0);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[3]) {
             isKeyPressed[3] = true;
-            LEARNER->Move(RIGHT);
+            LEARNER->learnMove(RIGHT);
             this->schedule([&](float dt) {
-                LEARNER->Move(RIGHT);
+                LEARNER->learnMove(RIGHT);
                 }, 0.8f, "MoveRIGHT");
         }
     }
     /* ¹¥»÷:I/K/J/L */
-    else if (keyCode == EventKeyboard::KeyCode::KEY_I)
-        LEARNER->Creature::Attack(UP);
-    else if (keyCode == EventKeyboard::KeyCode::KEY_K)
-        LEARNER->Creature::Attack(DOWN);
-    else if (keyCode == EventKeyboard::KeyCode::KEY_J)
-        LEARNER->Creature::Attack(LEFT);
-    else if (keyCode == EventKeyboard::KeyCode::KEY_L)
-        LEARNER->Creature::Attack(RIGHT);
+    else if (keyCode == EventKeyboard::KeyCode::KEY_I) {
+        LEARNER->ChangeFaceTo(UP);
+        LEARNER->Creature::Attack();
+    }
+    else if (keyCode == EventKeyboard::KeyCode::KEY_K) {
+        LEARNER->ChangeFaceTo(DOWN);
+        LEARNER->Creature::Attack();
+    }
+    else if (keyCode == EventKeyboard::KeyCode::KEY_J) {
+        LEARNER->ChangeFaceTo(LEFT);
+        LEARNER->Creature::Attack();
+    }
+    else if (keyCode == EventKeyboard::KeyCode::KEY_L) {
+        LEARNER->ChangeFaceTo(RIGHT);
+        LEARNER->Creature::Attack();
+    }
 }
 
 /* ¼üÅÌ¼àÌý:Move+Atk+Chat */
 void LearningScene::ChatKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
-    Vec2 moveBy;
-    int speed = 50;
-
     /* ÒÆ¶¯:W/S/A/D */
     if (keyCode == EventKeyboard::KeyCode::KEY_W) {
-        moveBy = Vec2(0, speed);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[0]) {
             isKeyPressed[0] = true;
-            LEARNER->Move(UP);
+            LEARNER->learnMove(UP);
             this->schedule([&](float dt) {
-                LEARNER->Move(UP);
+                LEARNER->learnMove(UP);
                 }, 0.8f, "MoveUP");
         }
     }
     else if (keyCode == EventKeyboard::KeyCode::KEY_S) {
-        moveBy = Vec2(0, -speed);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[1]) {
             isKeyPressed[1] = true;
-            LEARNER->Move(DOWN);
+            LEARNER->learnMove(DOWN);
             this->schedule([&](float dt) {
-                LEARNER->Move(DOWN);
+                LEARNER->learnMove(DOWN);
                 }, 0.8f, "MoveDOWN");
         }
     }
     else if (keyCode == EventKeyboard::KeyCode::KEY_A) {
-        moveBy = Vec2(-speed, 0);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[2]) {
             isKeyPressed[2] = true;
-            LEARNER->Move(LEFT);
+            LEARNER->learnMove(LEFT);
             this->schedule([&](float dt) {
-                LEARNER->Move(LEFT);
+                LEARNER->learnMove(LEFT);
                 }, 0.8f, "MoveLEFT");
         }
     }
     else if (keyCode == EventKeyboard::KeyCode::KEY_D) {
-        moveBy = Vec2(speed, 0);
-        Vec2 targetPosition = LEARNER->mySprite->getPosition() + moveBy;
         if (!isKeyPressed[3]) {
             isKeyPressed[3] = true;
-            LEARNER->Move(RIGHT);
+            LEARNER->learnMove(RIGHT);
             this->schedule([&](float dt) {
-                LEARNER->Move(RIGHT);
+                LEARNER->learnMove(RIGHT);
                 }, 0.8f, "MoveRIGHT");
         }
     }
     /* ¹¥»÷:J */
-    else if (keyCode == EventKeyboard::KeyCode::KEY_J)
-        LEARNER->Creature::Attack(LEARNER->getDir());
+    else if (keyCode == EventKeyboard::KeyCode::KEY_J) {
+        
+        LEARNER->Creature::Attack();
+    }
     /* ¶Ô»° */
     else if (keyCode == EventKeyboard::KeyCode::KEY_C) {
         CHATNPC->Chat();

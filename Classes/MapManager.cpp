@@ -1,6 +1,6 @@
 #include "MapManager.h"
 
-void MapManager::InitialMap(const char* mapName, const Vec2& MapPosition, Scene* TargetScene) {
+void MapManager::InitialMap(const string mapName, const Vec2& MapPosition, Scene* TargetScene) {
 	auto TiledMap = TMXTiledMap::create(mapName);    //创建地图对象
 	TiledMap->setAnchorPoint(Vec2(0.5f, 0.5f));    //设置地图的锚点为中心点
 	TiledMap->setPosition(MapPosition);    //设置地图的位置
@@ -48,10 +48,8 @@ void MapManager::InitialObjects(TMXTiledMap* TiledMap, int mapID) {
 				float y = obstacle["Y"].asFloat();
 				float width = obstacle["Width"].asFloat() * MapToSceneRatio;
 				float height = obstacle["Height"].asFloat() * MapToSceneRatio;
-				
 				// 创建矩形区域
 				Rect obstacleRect(TiledMapPosToScenePos(Vec2(x, y), mapID).x, TiledMapPosToScenePos(Vec2(x, y), mapID).y - height, width, height);
-
 				// 这里可以存储或使用这个区域来进行碰撞检测
 				// 比如添加到一个障碍物列表中
 				ObstacleList.push_back(obstacleRect);
@@ -181,7 +179,7 @@ Vec2 MapManager::GetTeleportPosition(int mapID)const {
 		return TeleportList[4];
 	}
 	else
-		return Vec2(-10000,-10000);
+		return Vec2(-10000, -10000);
 }
 
 void MapManager::ReverseIsBlackFogVisible() {
@@ -240,7 +238,7 @@ Vec2 MapManager::TiledMapPosToScenePos(const Vec2& tiledMapPos, int mapIndex) {
 		scenePos.y = tiledMapPosRect.y + RTPos.y + MapField;
 	}
 	else if (mapIndex == 3) { //DeathDesert
-		scenePos.x = tiledMapPosRect.x + RTPos.y + MapField;
+		scenePos.x = tiledMapPosRect.x + RTPos.x + MapField;
 		scenePos.y = tiledMapPosRect.y + RTPos.y - MapField;
 	}
 	else if (mapIndex == 4) { //BrightForest
@@ -264,7 +262,7 @@ Vec2 MapManager::TiledMapPosToScenePos(const Vec2& tiledMapPos, int mapIndex) {
 		scenePos.y = tiledMapPosRect.y + RTPos.y - MapField;
 	}
 	else
-		scenePos = Vec2::ZERO;
+		scenePos = Vec2(-10000, -10000);
 
 	return scenePos;
 }

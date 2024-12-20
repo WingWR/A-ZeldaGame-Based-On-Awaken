@@ -3,6 +3,8 @@
  <tileset firstgid="1" source="SnowyWinterWholeAsset.tsx"/>
  <tileset firstgid="257" source="MagicTelepoter.tsx"/>
  <tileset firstgid="513" source="../Vol_Snow_Ecotonal/spritesheet.tsx"/>
+ <tileset firstgid="769" source="../volcano/TX Props.tsx"/>
+ <tileset firstgid="1025" source="../Vol_Snow_Ecotonal/TX Props.tsx"/>
  <layer id="1" name="Ground" width="50" height="50">
   <data encoding="base64" compression="zlib">
    eJztmc0NgzAMhT0BI3SEbAD3im5ADj23bMDylaVYddMgmoCwnebwlL8e/N6HqRQ6AOiMqQ+jY3sXg3LBSx/W5MuSsOYpEvmxpDmxNynIN1fzCiPpfHOVqjnlTbtq4VFLf8TvWGeYB9bt4f0Ottgf3Urt0vmWMon7RDrbEqEH33io0VQRD18BD9RSAY+UpHM9StI5Nh6Nh2ZJ59h41M3jqiDTI3kMCrLd2x8Dk3S+R/AgSWdcysMymy2fVrigl/juAdd0t2WFCflxYaQ7rRHgbqlfOAt+V8f3LTCZ4fP+gea3yK92JjmeNXPJ8ayZSYl3jVxK/WtjszcHLVzw/+4J399yRzaPz8eVfVz7cH42D/om8gijD/X0iTn9hp95dkZeLPXH2XIb59LP9S9yFfHYYiSd9b/1R6pHGg+9egGNjvbn
@@ -40,7 +42,7 @@
  </layer>
  <layer id="9" name="BlackFog" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztwwEJAAAMA6C9wvqHXY6Dgr2kqqqqqqqqqqqq+vwAWzq5jQ==
+   eJztzkEJAAAIBDBBE1z/sNZQ2GP/ZaoC8FEfOAAAAAAAAAAAcMYCrBvW2A==
   </data>
  </layer>
  <objectgroup id="8" name="Obstacles">

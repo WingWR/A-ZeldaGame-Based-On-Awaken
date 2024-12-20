@@ -12,12 +12,12 @@ void Creature::initSprite() {
 
     // 创建碰撞框
     std::unordered_map<std::string, Size> bodySizeMap = {
-        {"Player1", Size(40, 70)},//
+        {"Player1", Size(40, 70)},
         {"Player2", Size(40, 60)},
         {"Player3", Size(40, 70)},
         {"Player4", Size(40, 70)},
         {"Player5", Size(40, 70)},
-        {"npc0", Size(60, 60)},
+        {"npc0", Size(65, 110)},
         {"npc1", Size(40, 60)},
         {"npc2", Size(50, 80)},
         {"npc3", Size(50, 80)},
@@ -35,6 +35,8 @@ void Creature::initSprite() {
             collisionBoxOffset = Vec2(0, -30);
         else if (role == "npc2" || role == "npc3" || role == "npc4" || role == "npc5" || role == "npc6")
             collisionBoxOffset = Vec2(0, -20);
+        else if(role=="npc0")
+            collisionBoxOffset = Vec2(0, -20);
     }
 
     // 添加精灵至场景中   
@@ -47,6 +49,13 @@ void Creature::initSprite() {
     drawCollisionBox();
 #else
 #endif
+}
+
+/* 更改碰撞框 */
+void Creature::editSizeOffset(Size size, Vec2 vec) {
+    collisionBoxSize = size;
+    collisionBoxOffset = vec;
+    //drawCollisionBox();
 }
 
 /* 防止碰撞 */
@@ -113,11 +122,12 @@ void Creature::drawCollisionBox() {
 
 
 /******************************* 动画相关 *************************************/
-/* 攻击动画 */
-Animate* Creature::Attack(int dir, Creature* opp) {
+//攻击动画
+
+void Creature::Attack() {
     // 死了,直接返回
     if (isDead)
-        return nullptr;
+        return;
 
     /* Monster1:树妖 */
     if (role == "Monster1") {
@@ -137,20 +147,14 @@ Animate* Creature::Attack(int dir, Creature* opp) {
         // 播放
         Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.2f);
         Animate* animate = Animate::create(animation);
-        mySprite->stopAllActions();    
+        mySprite->stopAllActions();
         mySprite->runAction(animate);
         CCLOG("%s attack", role);
-        // 对手受伤动画
-        if (opp != nullptr) {
-            opp->Hurt();
-        }
-        // 退出
-        return animate;
+        
+        return;
     }
 
     /* 玩家角色+Monster2+Monster3 */
-    // 更改面朝方向
-    face_to = dir;
     // 图片名前缀:除编号部分
     std::string s = "Role/" + role + "atk/";
     // 根据方向确认第一张图片 
@@ -194,11 +198,8 @@ Animate* Creature::Attack(int dir, Creature* opp) {
     mySprite->stopAllActions();
     mySprite->runAction(animate);
     CCLOG("%s attack", role);
-    // 对手受伤动画
-    if (opp != nullptr) {
-        opp->Hurt();
-    }
-    return animate;
+   
+    return;
 }
 
 /* 受伤动画 */
@@ -317,14 +318,14 @@ void Creature::Heal() {
 }
 
 /* 走路动画 */
-Animate* Creature::Move(int dir) {
+void Creature::Move(int dir) {
     // 死了,直接返回
     if (isDead) {
-        return nullptr;
+        return;
     }
 
     if (role == "Monster1")
-        return nullptr;
+        return;
 
     /* 更改面朝方向 */
     face_to = dir;
@@ -387,7 +388,76 @@ Animate* Creature::Move(int dir) {
     // 执行动作
     mySprite->runAction(animate);
     log("Move");
-    return animate;
+    return;
+}
+
+void Creature::learnMove(int dir) {
+    // 死了,直接返回
+    if (isDead)
+        return;
+    if (role == "Monster1")
+        return;
+
+    /* 更改面朝方向 */
+    face_to = dir;
+    log("face_to:%d", face_to);
+   
+    /* 图片名前缀:除编号部分 */
+    std::string s = "Role/" + role + "/";
+
+    /* 根据方向确认第一张图片及移动路径 */
+    speed = 50;
+    Vec2 moveBy;
+    int start = 1;
+    if (face_to == DOWN) {
+        moveBy = Vec2(0, -speed);
+        start = 1;
+    }
+    else if (face_to == LEFT) {
+        moveBy = Vec2(-speed, 0);
+        start = 5;
+    }
+    else if (face_to == RIGHT) {
+        moveBy = Vec2(speed, 0);
+        start = 9;
+    }
+    else if (face_to == UP) {
+        start = 13;
+        moveBy = Vec2(0, speed);
+    }
+
+    // 创建帧动画
+    Vector<SpriteFrame*> animFrames;
+    animFrames.reserve(4);
+    for (int i = start + 1; i < start + 4; i++) {
+        auto texture = Director::getInstance()->getTextureCache()->addImage(s + std::to_string(i) + ".png");
+        float width = texture->getPixelsWide();
+        float height = texture->getPixelsHigh();
+        Rect rectInPixels(0, 0, width, height);
+        auto spriteFrame = SpriteFrame::createWithTexture(
+            texture,
+            CC_RECT_PIXELS_TO_POINTS(rectInPixels)
+        );
+        animFrames.pushBack(spriteFrame);
+    }
+    auto texture = Director::getInstance()->getTextureCache()->addImage(s + std::to_string(start) + ".png");
+    float width = texture->getPixelsWide();
+    float height = texture->getPixelsHigh();
+    Rect rectInPixels(0, 0, width, height);
+    auto spriteFrame = SpriteFrame::createWithTexture(
+        texture,
+        CC_RECT_PIXELS_TO_POINTS(rectInPixels)
+    );
+    animFrames.pushBack(spriteFrame);
+
+    Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.2f);
+    Animate* animate = Animate::create(animation);
+
+    auto moveAction = MoveBy::create(0.8f, moveBy);
+    auto moveAndAnimate = Spawn::createWithTwoActions(animate, moveAction);
+
+    // 执行动作
+    mySprite->runAction(moveAndAnimate);
 }
 
 /* 死亡 */

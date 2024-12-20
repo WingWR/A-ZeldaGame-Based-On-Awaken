@@ -10,6 +10,8 @@ void Monster::update(float dt) {
 	 direction = target->mySprite->getPosition() - this->mySprite->getPosition();//怪物指向角色方向
 	//怪物AI
 	Vec2 mon = this->mySprite->getPosition();
+	x=getXY().x;
+
 	static int nums = 50;
 	if (nums < 60) {
 		nums++;
@@ -28,10 +30,13 @@ void Monster::update(float dt) {
 		Attack();
 	}
 	else if (state == MonsterState::CHASE) {
+		
 		Chase();
+		
 	}
 	else if (state == MonsterState::FLEE) {
 		Flee();
+		
 	}
 	else {
 		;
@@ -43,9 +48,9 @@ void Monster::Die() {
  	Creature::Die();
 }
 void Monster::Attack() {
-	static int nums =40 ;
+	static int nums =100 ;
 	 
-  	if (nums < 75) {
+  	if (nums < 120) {
 		nums++;
 		return;
 	}
@@ -56,18 +61,26 @@ void Monster::Attack() {
  	}
 	if (abs(direction.x) > abs(direction.y)) {
 		if (direction.x > 0) {
-			Creature::Attack(1, target);
+			face_to = 1;
+			Creature::Attack();
+			target->Hurt();
 		}
 		else {
-			Creature::Attack(0, target);
+			face_to = 0;
+			Creature::Attack();
+			target->Hurt();
 		}
 	}
 	else {
 		if (direction.y>0) {
-			Creature::Attack(2, target);
+			face_to = 2;
+			Creature::Attack();
+			target->Hurt();
 		}
 		else {
-			Creature::Attack(3, target);
+			face_to = 3;
+			Creature::Attack();
+			target->Hurt();
 		}
 	}
 }
@@ -83,20 +96,25 @@ void Monster::Chase() {
 		log("Monster:Chase*****************************************************************");
 		  
  	}
+	
 	if (abs(direction.x) > abs(direction.y)) {
 		if (direction.x > 0) {
 			Move(1);
+			mySprite->setPosition(x + (speed + 1.0 - 1.0) / 60, y);
 		}
 		else {
 			Move(0);
+			mySprite->setPosition(x + (-speed + 1.0 - 1.0) / 60, y);
 		}
 	}
 	else {
 		if (direction.y>0) {
 			Move(2);
+			mySprite->setPosition(x, y + (speed + 1.0 - 1.0) / 60);
 		}
 		else {
 			Move(3);
+			mySprite->setPosition(x, y + (-speed + 1.0 - 1.0) / 60);
 		}
 	}
  }
@@ -116,18 +134,22 @@ void Monster::Chase() {
 		log("a");
 		if (direction.x > 0) {
 			Creature::Move(0);
+			mySprite->setPosition(x + (-speed + 1.0 - 1.0) / 60, y);
 		}
 		else {
 			Creature::Move(1);
+			mySprite->setPosition(x + (speed + 1.0 - 1.0) / 60, y);
 		}
 	}
 	else {
 		log("b");
  		if (direction.y > 0) {
 			Creature::Move(3);
+			mySprite->setPosition(x, y + (-speed + 1.0 - 1.0) / 60);
 		}
 		else {
 			Creature::Move(2);
+			mySprite->setPosition(x, y + (speed + 1.0 - 1.0) / 60);
 		}
 	}
 }

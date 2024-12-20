@@ -4,6 +4,7 @@
  <tileset firstgid="65" source="../volcano/tf_A5_ashlands_3.tsx"/>
  <tileset firstgid="353" source="spritesheet.tsx"/>
  <tileset firstgid="609" source="../volcano/tf_A1_ashlands_3.tsx"/>
+ <tileset firstgid="1041" source="../volcano/TX Props.tsx"/>
  <layer id="1" name="Grass" width="50" height="50" locked="1">
   <data encoding="base64" compression="zlib">
    eJzVWV1z2jAQvLRJmzSBkpAEkoDLM///B1aeeodlvSdkaKeThxuwLcl7H3unk68i4kuRr0Wui1x90uu7Ij+K3Bd5+MTXj0WeiiyLPH/i67ci70U+imyS65cir0VWjeP/x3VL/LEe/Jzvs2Tjp8Y/r3MpPzKsLB1JP3+bzJsa/9thzUv5oVg6I9l8p8u/5EfN1rBHZ561xC90cfziexjP96byw9n4lEyJb8bG/x1/YDeMuynyrcj3IrdkwxZ+6Fy9vo1p8Q1s+P9i1tT5mKPjusr7ON503qLIrMi8yM/hehGeP+76OcY82Zo1eTzwOCyt9UPXXwuG9SBZPMOOtfrTmTUdf05hWUVeP9hn/bwdYfs1XO9iHM9T64+u6fKB6spYOvM+xs7/d3HIU5iPdafsfxiP4x/wM39eYqzrlPrhatAqDvWAr1vyu6sfGi/byPOB4xvW52fKD9ZD87v6pLV+8JxNjOMF42+Mr1gf1sv5NOMHv0/5gPst+yXOs/r+HY2fGV9di7+yvL0dsF8i0NvFL9vvxuBcxDGv1VeOD1ujRz/n8UJRfRw/YGuXw7s48E+5vQrPP7UH6uPfEuii9SXLQb2c0++oPd4b7A3d52f4Ru02J6nVm3Ps91YR4HgdpDZmbtZXPV5JarimxDTHswowwn/cI6lgjGJz+4oHWquGj+3U6hO1Lz9DPNfs5sa4vLSLPzx9M/79G75BzuR5wOHWU4zAwmu6vNRfb+KQv5Q3Lb6pyXKQU7zWWANG7AN4TZeXgDmrIQ6by4XL4Z2QxfAs46aurbEGjPAV8qOLK8ac1ZBaTLEerAPWeDJ+ZG6filMXY7jveL5OfJXxHvZjX6i/8VxtsE3WdX6Hzvs4cAD3Xf/Qy8OJNdn/vOdBPF2ZZy7vwo66Lmoq1zfXI8Bern/tdXg2a2Ic7Kr4l/Tue/NsGWO8HBM6D8I1g/UC3/eDqB69DpsY9wlYz/EaXFDcynfVk2NC50G4v+RayHzX/n0dh/0R48xiWXnhcHO/4zBiXZ0HGyrvMZ514H4Fccd7CMbJ8x238W7sv9x5r8Op/a/LW7y3AnYev6fxGiuKVe2mccW98d3wO+V8N6vlfLZZq/1uj8Cchr1ZD/UFxzDwuX4966/V9i4H8Bkb7nPeZ324F0F+QMygL3V51p0HuPOBrL9m/Mxbzi3MjVkc68nzmcv4RczU8mx2HuD44fjAfQl00BygeuqZBvuV44T/13ISzrv4vOmc7x+sg+Yp7aFgO9bzXea5HKQxBPwOj34/0euW7wvKFY4zF0ta59xeT33AezSHR89za+e72i87H2icuVjay3zeL7u6wLWy9fuhnp9hbT4TcrWCY4yFYynzheoB/039XqjfxBw/Zgl+xoZ4hM6ZrswJ5jvvpzgWMz6wtH4/r+HXeJ1FHm/aIzO/UOe57mR8dPmh5fu5w+T4wnsk5csyjvcjzBfei0CXzqyvezd+Z8v3c7VpTe5irIPmZ36utWQf4/h38XDqLEXtqvk3268vY2xr3dvpc+UI5yvlZAvuTBe8o5aTWFSHRUUHHr+PYz0+YuwDjSknmS4t3y/4bN/lVu6RlV/cH/J4lydcz654VRfHo+x7A3qhbXgecY+seWsfB66zPo/07IOeKXbnD3f+8RumnKi5
@@ -26,7 +27,7 @@
  </layer>
  <layer id="7" name="BlackFog" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztwwEJAAAMBKGr8v1LLsdAwVVTVVVVVVVVVVXV5w9cvkJU
+   eJztwzEJAAAMA7AeU1L/IqtjkEB6SVVVVVVVVVVVVfX5AXvccyg=
   </data>
  </layer>
  <objectgroup id="6" name="Obstacles">

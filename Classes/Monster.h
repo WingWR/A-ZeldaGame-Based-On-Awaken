@@ -90,7 +90,7 @@ public:
 	//ËÀÍö
 	void Die()override;
 	//¹¥»÷
-	void Attack();
+	void Attack()override;
 	// Ö´ĞĞÑ²ÂßÂß¼­
 	void Patrol();
 	// ×·×Ù

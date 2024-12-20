@@ -238,8 +238,10 @@ void NPC::npc1(std::function<void()> callback) {
 		NextButton = nullptr;
 		if (!Mtasks[0]) {
 			Mtasks[0] = true;
-			if (bag)
+			if (bag) {
 				bag->taskUnlock(1, 1);
+				bag->taskUnlock(0, 1);
+			}	
 			// 对话
 			npcTxt1->setString("The 1st main-line task is unlocked.\nClose the chat window and checkout your bag!");
 		}
@@ -255,6 +257,7 @@ void NPC::npc1(std::function<void()> callback) {
 		scene->addChild(CloseButton, 4);
 		CloseButton->addClickEventListener([=](Ref* sender) mutable {
 			npcTxt1->removeFromParent();
+			npcTxt1 = nullptr;
 			CloseButton->removeFromParent();
 			isChatting = false;
 			if (callback) {
@@ -286,10 +289,13 @@ void NPC::npc2(std::function<void()> callback) {
 		// 解锁任务
 		NextButton->removeFromParent();
 		NextButton = nullptr;
-		if (!Mtasks[0]) {
-			Mtasks[0] = true;
-			if (bag)
-				bag->taskUnlock(2, 1);
+		if (!Mtasks[1]) {
+			Mtasks[1] = true;
+			if (bag) {
+				bag->taskUnlock(1, 2);
+				bag->taskUnlock(0, 2);
+			}
+				
 			// 对话
 			npcTxt1->setString("The 2nd main-line task is unlocked.\nClose the chat window and checkout your bag!");
 		}
@@ -305,7 +311,9 @@ void NPC::npc2(std::function<void()> callback) {
 		scene->addChild(CloseButton, 4);
 		CloseButton->addClickEventListener([=](Ref* sender) mutable {
 			npcTxt1->removeFromParent();
+			npcTxt1 = nullptr;
 			CloseButton->removeFromParent();
+			CloseButton = nullptr;
 			isChatting = false;
 			if (callback) {
 				callback();
@@ -336,10 +344,12 @@ void NPC::npc3(std::function<void()> callback) {
 		// 解锁任务
 		NextButton->removeFromParent();
 		NextButton = nullptr;
-		if (!Mtasks[0]) {
-			Mtasks[0] = true;
-			if (bag)
-				bag->taskUnlock(3, 1);
+		if (!Mtasks[2]) {
+			Mtasks[2] = true;
+			if (bag) {
+				bag->taskUnlock(1, 3);
+				bag->taskUnlock(0, 3);
+			}
 			// 对话
 			npcTxt1->setString("The 3rd main-line task is unlocked.\nClose the chat window and checkout your bag!");
 		}
@@ -355,7 +365,9 @@ void NPC::npc3(std::function<void()> callback) {
 		scene->addChild(CloseButton, 4);
 		CloseButton->addClickEventListener([=](Ref* sender) mutable {
 			npcTxt1->removeFromParent();
+			npcTxt1 = nullptr;
 			CloseButton->removeFromParent();
+			CloseButton = nullptr;
 			isChatting = false;
 			if (callback) {
 				callback();
@@ -386,10 +398,12 @@ void NPC::npc4(std::function<void()> callback) {
 		// 解锁任务
 		NextButton->removeFromParent();
 		NextButton = nullptr;
-		if (!Mtasks[0]) {
-			Mtasks[0] = true;
-			if (bag)
-				bag->taskUnlock(4, 1);
+		if (!Mtasks[3]) {
+			Mtasks[3] = true;
+			if (bag) {
+				bag->taskUnlock(1, 4);
+				bag->taskUnlock(0, 4);
+			}
 			// 对话
 			npcTxt1->setString("The 4th main-line task is unlocked.\nClose the chat window and checkout your bag!");
 		}
@@ -436,10 +450,12 @@ void NPC::npc5(std::function<void()> callback) {
 		// 解锁任务
 		NextButton->removeFromParent();
 		NextButton = nullptr;
-		if (!Mtasks[0]) {
-			Mtasks[0] = true;
-			if (bag)
-				bag->taskUnlock(5, 1);
+		if (!Mtasks[5]) {
+			Mtasks[5] = true;
+			if (bag) {
+				bag->taskUnlock(1, 5);
+				bag->taskUnlock(0, 5);
+			}
 			// 对话
 			npcTxt1->setString("The 5th main-line task is unlocked.\nClose the chat window and checkout your bag!");
 		}

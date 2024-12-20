@@ -7,7 +7,7 @@ USING_NS_CC;
 using namespace std;
 
 const int MapField = 1843;    //单张瓦片地图的大小
-const Vec2 RTPos = Vec2(258.5f, 1568.5f);    //RebirthTemple左上角的场景坐标
+const Vec2 RTPos = Vec2(258.5f, 1568.5f + 720.0f - 647.0f);    //RebirthTemple左上角的场景坐标，720.0f - 647.0f是消除误差的修正
 const float MapToSceneRatio = 1.151875f;    //瓦片地图坐标转场景坐标的比例
 
 class MapManager :public Node {
@@ -30,7 +30,7 @@ public:
 	void InitialObjects(TMXTiledMap* TiledMap, int mapIndex);
 	
 	/*初始化瓦片地图*/
-	void InitialMap(const char* mapName, const Vec2& MapPosition, Scene* TargetScene);
+	void InitialMap(const string mapName, const Vec2& MapPosition, Scene* TargetScene);
 	
 	/*返回某个瓦片地图*/
 	TMXTiledMap* GetTiledMap(int MapID);
@@ -61,6 +61,9 @@ public:
 
 	/*获取传送门的位置*/
 	Vec2 GetTeleportPosition(int MapID)const;
+
+	/*获取相应传送点是否已经被解锁*/
+	bool GetIsRegionRevealed(int MapID)const;
 
 	/*获取相应传送点是否已经被解锁*/
 	bool GetIsRegionRevealed(int MapID)const;

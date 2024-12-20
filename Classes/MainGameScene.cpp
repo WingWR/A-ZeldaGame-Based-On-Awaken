@@ -196,7 +196,7 @@ void MainGameScene::MicroCameraFollowPlayer() {
 
 void MainGameScene::UnlockMapTeleport() {
 	// 解锁传送门
-	if (PLAYER->mySprite->getPosition().distance(_mapManager->GetTeleportPosition(_mapManager->GetPlayerInWhichMap())) < 70.0f 
+	if (PLAYER->mySprite->getPosition().distance(_mapManager->GetTeleportPosition(_mapManager->GetPlayerInWhichMap())) < 70.0f
 		&& _mapManager->GetIsRegionRevealed(_mapManager->GetPlayerInWhichMap()) == false) {
 		_mapManager->SetIsRegionRevealedTrue();
 	}
@@ -207,7 +207,9 @@ void MainGameScene::TeleportPlayer(int MapID) {
 	if (_mapManager->GetTeleportPosition(MapID) != Vec2(0, 0)) {
 		PLAYER->mySprite->stopAllActions();  // 停止当前的所有动作
 		this->unscheduleAllCallbacks();  // 停止所有定时器
+		Vec2 playerPosition = PLAYER->mySprite->getPosition();
 		PLAYER->mySprite->setPosition(_mapManager->GetTeleportPosition(MapID));
+		PLAYER->ChangeXY(_mapManager->GetTeleportPosition(MapID) - playerPosition);
 	}
 }
 
@@ -504,8 +506,8 @@ void MainGameScene::MouseClickedForTeleport(EventMouse* event) {
 	Vec2 ScenePosition = ScreenToScene(MousePosition);
 
 	for (int i = 0; i < 5; i++) {         // 遍历五个传送门，顺序是RebirthTemple->volcano->SnowyWinter->DeathDesert->BrightForest
-		if (_mapManager->GetTeleportPosition(i).distance(ScenePosition) < 50.0f ) {// 如果点击位置在传送门在周围区域内
-			if(_mapManager->GetIsRegionRevealed(i)){
+		if (_mapManager->GetTeleportPosition(i).distance(ScenePosition) < 50.0f) {// 如果点击位置在传送门在周围区域内
+			if (_mapManager->GetIsRegionRevealed(i)) {
 				// 传送玩家
 				TeleportPlayer(i);
 				break;
@@ -533,8 +535,8 @@ void MainGameScene::MouseClicked(EventMouse* event) {
 }
 
 Vec2 MainGameScene::ScreenToScene(const Vec2& screenPos) {
-      // 屏幕坐标转为世界坐标
-	  // 获取屏幕分辨率
+	// 屏幕坐标转为世界坐标
+	// 获取屏幕分辨率
 	cocos2d::Size screenSize = cocos2d::Director::getInstance()->getWinSize();
 	float screenWidth = screenSize.width;
 	float screenHeight = screenSize.height;
@@ -566,7 +568,7 @@ Vec2 MainGameScene::ScreenToScene(const Vec2& screenPos) {
 
 	float t = -rayOrigin.z / rayDir.z; // 平面 z = 0
 	Vec3 outWorldPos = rayOrigin + rayDir * t;
-	
+
 
 	CCLOG("World Position: x = %f, y = %f", outWorldPos.x, outWorldPos.y);
 
