@@ -41,15 +41,27 @@ void Monster::update(float dt) {
 	else {
 		;
 	}
+	if (is_moving) {
+		if(face_to==0)
+			mySprite->setPosition(x + (-speed + 1.0 - 1.0) / 60, y);
+		else if(face_to==1)
+			mySprite->setPosition(x + (speed + 1.0 - 1.0) / 60, y);
+		else if(face_to==2)
+			mySprite->setPosition(x, y + (speed + 1.0 - 1.0) / 60);
+		else if(face_to==3)
+			mySprite->setPosition(x, y + (-speed + 1.0 - 1.0) / 60);
+	}
+
 }
 //¹ÖÎïËÀÍö»úÖÆ
 void Monster::Die() {
+	is_moving = false;
  	target->GetBonus(bonus);
  	Creature::Die();
 }
 void Monster::Attack() {
 	static int nums =100 ;
-	 
+	is_moving = false;
   	if (nums < 120) {
 		nums++;
 		return;
@@ -90,8 +102,8 @@ void Monster::Attack() {
 }
 void Monster::Chase() {
 	static int nums = 30;
-	 
-  	if (nums < 50) {
+	is_moving = true;
+  	if (nums < 48) {
 		nums++;
 		return;
 	}
@@ -104,28 +116,28 @@ void Monster::Chase() {
 	if (abs(direction.x) > abs(direction.y)) {
 		if (direction.x > 0) {
 			Move(1);
-			mySprite->setPosition(x + (speed + 1.0 - 1.0) / 60, y);
+			face_to = 1;
 		}
 		else {
 			Move(0);
-			mySprite->setPosition(x + (-speed + 1.0 - 1.0) / 60, y);
+			face_to = 0;
 		}
 	}
 	else {
 		if (direction.y>0) {
 			Move(2);
-			mySprite->setPosition(x, y + (speed + 1.0 - 1.0) / 60);
+			face_to = 2;
 		}
 		else {
 			Move(3);
-			mySprite->setPosition(x, y + (-speed + 1.0 - 1.0) / 60);
+			face_to = 3;
 		}
 	}
  }
  void Monster::Flee() {
 	static int nums = 0;
-	 
-  	if (nums < 50) {
+	is_moving = true;
+  	if (nums < 48) {
 		nums++;
 		return;
 	}
@@ -138,22 +150,22 @@ void Monster::Chase() {
 		log("a");
 		if (direction.x > 0) {
 			Creature::Move(0);
-			mySprite->setPosition(x + (-speed + 1.0 - 1.0) / 60, y);
+			face_to = 0;
 		}
 		else {
 			Creature::Move(1);
-			mySprite->setPosition(x + (speed + 1.0 - 1.0) / 60, y);
+			face_to = 1;
 		}
 	}
 	else {
 		log("b");
  		if (direction.y > 0) {
 			Creature::Move(3);
-			mySprite->setPosition(x, y + (-speed + 1.0 - 1.0) / 60);
+			face_to = 3;
 		}
 		else {
 			Creature::Move(2);
-			mySprite->setPosition(x, y + (speed + 1.0 - 1.0) / 60);
+			face_to = 2;
 		}
 	}
 }

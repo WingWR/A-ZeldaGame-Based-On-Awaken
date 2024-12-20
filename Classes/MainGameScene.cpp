@@ -358,6 +358,39 @@ void MainGameScene::KeyPressedForPlayerAttack(EventKeyboard::KeyCode keyCode, Ev
 			CCLOG("Attack on cooldown, please wait");
 		}
 	}
+	else if(keyCode == EventKeyboard::KeyCode::KEY_K) {
+		if (canAttack) {
+			canAttack = false;
+			CCLOG("into attack");
+			PLAYER->Skill(1,_monsterRespawn->GetMonster());
+			CCLOG("out attack");
+
+			this->scheduleOnce([&](float dt) {
+				canAttack = true; // 2Ãëºó»Ö¸´¹¥»÷×´Ì¬
+				CCLOG("Attack ready again");
+				}, 3.0f, "attack_cooldown_timer");
+		}
+		else {
+			CCLOG("Attack on cooldown, please wait");
+		}
+		
+	}
+	else if (keyCode == EventKeyboard::KeyCode::KEY_L) {
+		if (canAttack) {
+			canAttack = false;
+			CCLOG("into attack");
+			PLAYER->Skill(2,_monsterRespawn->GetMonster());
+			CCLOG("out attack");
+
+			this->scheduleOnce([&](float dt) {
+				canAttack = true; // 2Ãëºó»Ö¸´¹¥»÷×´Ì¬
+				CCLOG("Attack ready again");
+				}, 3.0f, "attack_cooldown_timer");
+		}
+		else {
+			CCLOG("Attack on cooldown, please wait");
+		}
+	}
 }
 
 void MainGameScene::KeyPressedForNPCInteract(EventKeyboard::KeyCode keyCode, Event* event) {

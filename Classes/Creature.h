@@ -32,7 +32,7 @@ protected:
 	int level;        // 等级
 	int x, y;         // 位置
 	ElementType elementType; // 属性
-
+	bool is_moving;
 	float scale;      // 缩放比例
 	Scene* scene;     // 场景指针
 
@@ -50,6 +50,7 @@ public:
 	bool isCollision(const Rect& rect1, const Rect& rect2);        // 判断碰撞
 	void preventOverlap(Creature* creature1, Creature* creature2); // 防止碰撞
 	void Creature::drawCollisionBox();     // 画碰撞框:调试用
+	void editSizeOffset(Size size, Vec2 vec);
 
 	/* 构造函数 */
 	Creature(std::string role, int hp, int mp, int atk, int atk_range, int def, int speed, int level, int x, int y, float scale, Scene* scene) :
@@ -85,7 +86,6 @@ public:
 
 	/* 释放攻击技能 */
 	// opp为攻击对象
-	
 	virtual void Attack();
 	int getDir() { return face_to; }
 
@@ -103,7 +103,7 @@ public:
 	virtual void Heal();
 
 	/* 移动 */
-	virtual void Move(int dir);
+	virtual Animate* Move(int dir);
 	virtual void learnMove(int dir);
 
 

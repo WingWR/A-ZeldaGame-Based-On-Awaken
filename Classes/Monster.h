@@ -139,12 +139,12 @@ public:
 		MonsterBonus bonus;
 		monster1 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 1000, 100, 0, bonus.monster_bonus1, player, 1000, 1, scene);
 		monster2 = new Monster("Monster2", 100000, 600, 20, 40, 20, 100, 2, 3000, 2000, 0, bonus.monster_bonus2, player, 1000, 1, scene);
-		monster3 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 500, -100, 0, bonus.monster_bonus3, player, 1000, 1, scene);
-		monster4 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 600, -200, 0, bonus.monster_bonus4, player, 1000, 1, scene);
-		monster5 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, -500, 100, 0, bonus.monster_bonus5, player, 1000, 1, scene);
-		monster6 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, -100, -100, 0, bonus.monster_bonus6, player, 1000, 1, scene);
-		monster7 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 1500, 1200, 0, bonus.monster_bonus7, player, 1000, 1, scene);
-		monster8 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 600, 400, 0, bonus.monster_bonus8, player, 1000, 1, scene);
+		monster3 = new Monster("Monster3", 100000, 600, 20, 40, 20, 100, 2, 500, -100, 0, bonus.monster_bonus3, player, 1000, 1, scene);
+		monster4 = new Monster("Monster4", 100000, 600, 20, 40, 20, 100, 2, 600, -200, 0, bonus.monster_bonus4, player, 1000, 1, scene);
+		monster5 = new Monster("Monster5", 100000, 600, 20, 40, 20, 100, 2, -500, 100, 0, bonus.monster_bonus5, player, 1000, 1, scene);
+		monster6 = new Monster("Monster6", 100000, 600, 20, 40, 20, 100, 2, -100, -100, 0, bonus.monster_bonus6, player, 1000, 1, scene);
+		monster7 = new Monster("Monster7", 100000, 600, 20, 40, 20, 100, 2, 1500, 1200, 0, bonus.monster_bonus7, player, 1000, 1, scene);
+		monster8 = new Monster("Monster8", 100000, 600, 20, 40, 20, 100, 2, 600, 400, 0, bonus.monster_bonus8, player, 1000, 1, scene);
 		monster.push_back(monster1);
 		monster.push_back(monster2);
 		monster.push_back(monster3);

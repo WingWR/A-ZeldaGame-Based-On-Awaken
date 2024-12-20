@@ -24,11 +24,12 @@ private:
 	int current_exp;       // 角色现有经验值
 	int next_level_exp;    // 达到下一级所需经验值
 	vector<Monster*> monster;
-	bool is_moving;
+	
 	MapManager* map_manager;
 	Sprite* healthBarBackground;  // 血条背景
 	Sprite* healthBar;            // 实时显示血量的血条
 	Label* hpLabel;               // 显示hp值
+	float criticalChance;  // 角色暴击率
 protected:
 	// 玩家名字在Creature类里已定义了:(	
 
@@ -49,19 +50,24 @@ public:
 		_accessories = nullptr;
 		coins = 1000;
 		is_moving = 0;
-		mySprite->setAnchorPoint(Vec2(0.5f, 0.1f));
+		criticalChance = 0;
 		scene->addChild(this);
 		this->scheduleUpdate();
 
 		// 初始化血条
 		healthBarBackground = Sprite::create("health/health_bg.png");
 		healthBarBackground->setAnchorPoint(Vec2(0, 1));
-		healthBarBackground->setPosition(Vec2(-920, 800));  
+		healthBarBackground->setPosition(Vec2(50, 180));
 		this->mySprite->addChild(healthBarBackground);
+		healthBar = Sprite::create("health/health_bar.png");
+		healthBar->setAnchorPoint(Vec2(0, 1));
+		healthBar->setPosition(Vec2(50, 180));
+		healthBar->setColor(Color3B::RED);
+		this->mySprite->addChild(healthBar);
 		// 显示hp值
 		hpLabel = Label::createWithTTF("hp:" + to_string(current_hp), "fonts/arial.ttf", 18);
 		hpLabel->setAnchorPoint(Vec2(0, 1));
-		hpLabel->setPosition(Vec2(-975,800));
+		hpLabel->setPosition(Vec2(50, 180));
 		this->mySprite->addChild(hpLabel);
 	}
 	// 调试用构造函数
@@ -79,8 +85,11 @@ public:
 	/* 释放攻击技能 */
 	// 对于部分怪物,无方向一说:Monster1树妖
 	// opp为攻击对象
-	virtual Animate* Attack(vector<Monster*>monster);
-	
+	virtual void Attack(vector<Monster*>monster);
+	//技能1
+	void Skill(int skill_num,vector<Monster*>monster);
+	void Skill_Animate1();
+	void Skill_Animate2();
 	/* 判断交互范围 */
 	virtual bool isTrigger(const Vec2& pos);
 
@@ -121,6 +130,7 @@ public:
 		_shoes = other._shoes;
 		_accessories = other._accessories;
 		coins = other.coins;
+		criticalChance = other.criticalChance;
 		this->setElementType(other.elementType);
 		if (mySprite == nullptr)
 		{
