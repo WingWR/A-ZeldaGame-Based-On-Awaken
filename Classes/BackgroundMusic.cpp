@@ -3,7 +3,7 @@
 // 播放音乐
 void music::playBackgroundMusic(string musicName)
 {
-	audioId = cocos2d::experimental::AudioEngine::play2d(musicName, true);
+	audioId = cocos2d::AudioEngine::play2d(musicName, true);
 }
 
 // 单例实例置为空指针
@@ -40,7 +40,7 @@ void music::openMusicPanel(Player* player)
 		if (type == ui::Slider::EventType::ON_PERCENTAGE_CHANGED) {
 			int percent = volumeSlider->getPercent();
 			volume = percent / 100.0f;  // 音量值
-			cocos2d::experimental::AudioEngine::setVolume(audioId, volume);  // 设置音量
+			cocos2d::AudioEngine::setVolume(audioId, volume);  // 设置音量
 		}
 		});
 	volumeBackground->addChild(volumeSlider);
@@ -71,6 +71,6 @@ void music::closeMusicPanel()
 
 void music::switchBackgroundMusic(string musicName)
 {
-	cocos2d::experimental::AudioEngine::pause(audioId);
+	cocos2d::AudioEngine::pause(audioId);
 	playBackgroundMusic(musicName);
 }

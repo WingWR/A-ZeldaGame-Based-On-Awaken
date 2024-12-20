@@ -27,7 +27,9 @@ TMXTiledMap* MapManager::GetTiledMap(int MapID) {
 	return MapList[MapID];
 }
 
-int MapManager::GetPlayerInWhichMap() const { return PlayerInWhichMap; }
+int MapManager::GetPlayerInWhichMap() const { 
+	return PlayerInWhichMap;
+}
 
 void MapManager::InitialObjects(TMXTiledMap* TiledMap, int mapID) {
 	TMXObjectGroup* ObjectLayer = TiledMap->getObjectGroup("Obstacles");    //获取障碍物层
@@ -48,28 +50,39 @@ void MapManager::InitialObjects(TMXTiledMap* TiledMap, int mapID) {
 				float height = obstacle["Height"].asFloat() * MapToSceneRatio;
 				
 				// 创建矩形区域
-				Rect obstacleRect(tiledMapPosToScenePos(Vec2(x, y), mapID).x, tiledMapPosToScenePos(Vec2(x, y), mapID).y - height, width, height);
+				Rect obstacleRect(TiledMapPosToScenePos(Vec2(x, y), mapID).x, TiledMapPosToScenePos(Vec2(x, y), mapID).y - height, width, height);
 
 				// 这里可以存储或使用这个区域来进行碰撞检测
 				// 比如添加到一个障碍物列表中
 				ObstacleList.push_back(obstacleRect);
 			}
-			else if (objectType == "Teleport") {
+			else if (objectType == "TeleportPoint") {
 				// 根据对象类型读取其属性
 				// 传送点
 				float x = obstacle["X"].asFloat();
 				float y = obstacle["Y"].asFloat();
 				// 保存传送点坐标
-				TeleportList.push_back(tiledMapPosToScenePos(Vec2(x, y), mapID));
+				TeleportList.push_back(TiledMapPosToScenePos(Vec2(x, y), mapID));
 			}
 			else if (objectType == "Interaction") {
 				// 根据对象类型读取其属性
 				// 可交互区域
-				float x = obstacle["x"].asFloat();
-				float y = obstacle["y"].asFloat();
+				float x = obstacle["X"].asFloat();
+				float y = obstacle["Y"].asFloat();
 
 				// 保存可交互区域坐标
-				InteractionList.push_back(tiledMapPosToScenePos(Vec2(x, y), mapID));
+				InteractionList.push_back(TiledMapPosToScenePos(Vec2(x, y), mapID));
+			}
+			else if (objectType == "InDoorPoint") {
+				// 根据对象类型读取其属性
+				// 门
+				float x = obstacle["X"].asFloat();
+				float y = obstacle["Y"].asFloat();
+				// 对应场景的名称
+				string SceneName = obstacle["SceneName"].asString();
+
+				// 保存门坐标
+				InDoorList.push_back({ TiledMapPosToScenePos(Vec2(x, y), mapID), SceneName });
 			}
 		}
 	}
@@ -94,13 +107,57 @@ bool MapManager::IsMoveable(const Vec2& Position) {
 	//遍历障碍物列表中的每一个障碍物
 	for (const auto& obstacle : ObstacleList) {
 		if (obstacle.containsPoint(Position)) {
-			/// 如果位置在障碍物范围内，则不可移动
+
+			/// 如果人物的碰撞箱在障碍物范围内，则不可移动
 			return false;
 		}
 	}
 
 	// 如果位置不在障碍物范围内，则可移动
 	return true;
+}
+
+bool MapManager::IsInteractable(const Vec2& Position) {
+	//遍历可交互区域列表中的每一个可交互区域
+	for (const auto& interactpos: InteractionList) {
+		if (Position.distance(interactpos) < 32.0f) {
+
+			// 如果玩家在可交互区域内，则可交互
+			return true;
+		}
+	}
+
+	// 如果位置不在可交互区域范围内，则不可交互
+	return false;
+}
+
+bool MapManager::IsTeleportUnlockable(const Vec2& pos) {
+	//遍历传送点列表中的每一个传送点
+	for (const auto& teleport : TeleportList) {
+		if (pos.distance(teleport) < 32.0f) {
+
+			// 如果玩家在传送点范围内，则传送点可使用
+			return true;
+		}
+	}
+
+	// 如果位置不在传送点范围内，则传送点不可使用
+	return false;
+}
+
+bool MapManager::IsDoorIntoable(const Vec2& pos,string& SceneName) {
+	//遍历传送点列表中的每一个传送点
+	for (const auto& teleport : InDoorList) {
+		if (pos.distance(teleport.first) < 32.0f) {
+
+			// 如果玩家在传送点范围内，则传送点可使用
+			SceneName = teleport.second;
+			return true;
+		}
+	}
+
+	// 如果位置不在传送点范围内，则传送点不可使用
+	return false;
 }
 
 Vec2 MapManager::GetTeleportPosition(int mapID)const {
@@ -161,7 +218,7 @@ bool MapManager::GetIsRegionRevealed(int MapID)const {
 	return IsRegionRevealed[MapID];
 }
 
-Vec2 MapManager::tiledMapPosToScenePos(const Vec2& tiledMapPos, int mapIndex) {
+Vec2 MapManager::TiledMapPosToScenePos(const Vec2& tiledMapPos, int mapIndex) {
 	// 将瓦片地图坐标系中的位置转换为场景坐标系中的位置
 	// 瓦片地图坐标系的原点在左上角，而场景坐标系的原点在左下角
 	if (mapIndex < 0 || mapIndex >= (int)MapList.size()) {

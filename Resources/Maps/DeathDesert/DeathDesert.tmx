@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="323">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="325">
  <tileset firstgid="1" source="DesertItem.tsx"/>
  <tileset firstgid="1985" source="DesertRoad.tsx"/>
  <tileset firstgid="2245" source="DesertRock.tsx"/>
@@ -386,11 +386,11 @@
     <property name="Y" type="float" value="1462.33"/>
    </properties>
   </object>
-  <object id="270" x="73.3333" y="1222.67" width="272" height="5.33333">
+  <object id="270" x="69.3333" y="1222.67" width="282.667" height="5.33333">
    <properties>
-    <property name="Height" type="float" value="5.33333"/>
-    <property name="Width" type="float" value="272"/>
-    <property name="X" type="float" value="73.3333"/>
+    <property name="Height" type="float" value="5.33"/>
+    <property name="Width" type="float" value="282.67"/>
+    <property name="X" type="float" value="69.33"/>
     <property name="Y" type="float" value="1222.67"/>
    </properties>
   </object>
@@ -707,21 +707,12 @@
    </properties>
    <point/>
   </object>
-  <object id="310" type="Teleport" x="190.5" y="1249.5" width="36" height="24">
+  <object id="311" x="60.6667" y="1225.34" width="9.33333" height="330">
    <properties>
-    <property name="Height" type="float" value="24"/>
-    <property name="Width" type="float" value="36"/>
-    <property name="X" type="float" value="190.5"/>
-    <property name="Y" type="float" value="1249.5"/>
-   </properties>
-   <ellipse/>
-  </object>
-  <object id="311" x="60.6667" y="1240.67" width="9.33333" height="314.667">
-   <properties>
-    <property name="Height" type="float" value="314.667"/>
-    <property name="Width" type="float" value="9.33333"/>
-    <property name="X" type="float" value="60.6667"/>
-    <property name="Y" type="float" value="1240.67"/>
+    <property name="Height" type="float" value="330"/>
+    <property name="Width" type="float" value="9.33"/>
+    <property name="X" type="float" value="60.67"/>
+    <property name="Y" type="float" value="1225.34"/>
    </properties>
   </object>
   <object id="312" x="-1" y="1596" width="1596.5" height="2.5">
@@ -811,6 +802,21 @@
     <property name="X" type="float" value="0"/>
     <property name="Y" type="float" value="4"/>
    </properties>
+  </object>
+  <object id="323" x="190.5" y="1247.5" width="35.5" height="30.5">
+   <properties>
+    <property name="Height" type="float" value="30.5"/>
+    <property name="Width" type="float" value="35.5"/>
+    <property name="X" type="float" value="190.5"/>
+    <property name="Y" type="float" value="1247.5"/>
+   </properties>
+  </object>
+  <object id="324" type="TeleportPoint" x="207" y="1289">
+   <properties>
+    <property name="X" type="float" value="207"/>
+    <property name="Y" type="float" value="1289"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>

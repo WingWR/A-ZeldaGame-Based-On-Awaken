@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="15" nextobjectid="179">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="15" nextobjectid="180">
  <tileset firstgid="1" source="RebirthGrass.tsx"/>
  <tileset firstgid="65" source="RebirthStruct.tsx"/>
  <tileset firstgid="321" source="RebirthWall.tsx"/>
@@ -986,15 +986,6 @@
     <property name="Y" type="float" value="30"/>
    </properties>
   </object>
-  <object id="156" type="Teleport" x="126.5" y="892.5" width="33.5" height="22.5">
-   <properties>
-    <property name="Height" type="float" value="22.5"/>
-    <property name="Width" type="float" value="33.5"/>
-    <property name="X" type="float" value="126.5"/>
-    <property name="Y" type="float" value="892.5"/>
-   </properties>
-   <ellipse/>
-  </object>
   <object id="157" type="Interaction" x="1552" y="82">
    <properties>
     <property name="Height" type="float" value="0"/>
@@ -1118,5 +1109,12 @@
    </properties>
   </object>
   <object id="176" x="398.5" y="1023"/>
+  <object id="179" type="TeleportPoint" x="144.5" y="901">
+   <properties>
+    <property name="X" type="float" value="144.5"/>
+    <property name="Y" type="float" value="901"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
 </map>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="103">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="105">
  <tileset firstgid="1" source="SnowyWinterWholeAsset.tsx"/>
  <tileset firstgid="257" source="MagicTelepoter.tsx"/>
  <tileset firstgid="513" source="../Vol_Snow_Ecotonal/spritesheet.tsx"/>
@@ -740,15 +740,6 @@
     <property name="Y" type="float" value="323.333"/>
    </properties>
   </object>
-  <object id="93" type="Teleport" x="93" y="1087" width="35" height="23">
-   <properties>
-    <property name="Height" type="float" value="23"/>
-    <property name="Width" type="float" value="35"/>
-    <property name="X" type="float" value="93"/>
-    <property name="Y" type="float" value="1087"/>
-   </properties>
-   <ellipse/>
-  </object>
   <object id="94" type="Interaction" x="1552" y="28">
    <properties>
     <property name="Height" type="float" value="0"/>
@@ -821,6 +812,21 @@
     <property name="X" type="float" value="1289.5"/>
     <property name="Y" type="float" value="201.5"/>
    </properties>
+  </object>
+  <object id="103" type="TeleportPoint" x="112" y="1098">
+   <properties>
+    <property name="X" type="float" value="112"/>
+    <property name="Y" type="float" value="1098"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="104" type="InDoorPoint" x="1478.18" y="203.091">
+   <properties>
+    <property name="SceneName" value="WinterInDoor"/>
+    <property name="X" type="float" value="1478.18"/>
+    <property name="Y" type="float" value="203.09"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>

@@ -74,6 +74,9 @@ public:
 	/*将玩家传送到选择的传送点*/
 	void TeleportPlayer(int MapID);
 
+	/*进入室内场景*/
+	void ChangeToInDoorScene(const string SceneName);
+
 	/**********************************************************************/
 	////////////////以下为本场景所有与监视器相关的回调函数/////////////////
 	/*键盘事件处理, 按下M键切换显示微地图*/
@@ -93,8 +96,14 @@ public:
 	/*键盘事件处理，按下C键打开NPC交互界面*/
 	void KeyPressedForNPCInteract(EventKeyboard::KeyCode keyCode, Event* event);
 
-	/*鼠标事件处理，滚动滚轮控制地图缩放*/
-	void MouseScrollForCameraZoom(EventMouse* event, Camera* camera, float MaxHeight, float MinHeight, float ScrollSpeed);
+	/*键盘事件处理，按下C键解锁传送点*/
+	void KeyPressedForUnlockTeleport(EventKeyboard::KeyCode keyCode, Event* event);
+
+	/*键盘事件处理，按下C键进入室内场景*/
+	void KeyPressedForGetInDoor(EventKeyboard::KeyCode keyCode, Event* event);
+
+	/*键盘事件处理，按下C键与场景互动，主要是打开箱子*/
+	void KeyPressedForInteraction(EventKeyboard::KeyCode keyCode, Event* event);
 
 	/*键盘事件处理，按下方向键控制小地图方向*/
 	void KeyPressedForMicroMapMove(EventKeyboard::KeyCode keyCode, Event* event, Camera* camera, float MaxHeight, float MinHeight, float MaxWidth, float MinWidth, float ScrollSpeed);
@@ -104,6 +113,9 @@ public:
 
 	/*键盘事件处理，最终处理键盘释放事件函数*/
 	void KeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
+
+	/*鼠标事件处理，滚动滚轮控制地图缩放*/
+	void MouseScrollForCameraZoom(EventMouse* event, Camera* camera, float MaxHeight, float MinHeight, float ScrollSpeed);
 
 	/*鼠标事件处理，最终处理鼠标滚轮事件函数*/
 	void MouseScroll(EventMouse* event);

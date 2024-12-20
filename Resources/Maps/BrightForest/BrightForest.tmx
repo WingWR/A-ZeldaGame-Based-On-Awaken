@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="111">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="116">
  <tileset firstgid="1" source="Grassland Tileset.tsx"/>
  <tileset firstgid="419" source="Pack 1 expansion.tsx"/>
  <tileset firstgid="559" source="Reg tree wall.tsx"/>
@@ -33,7 +33,7 @@
  </layer>
  <layer id="12" name="Decorate" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztmL+PTUEUx2caNmF1u2hYBcFqiMbPfbJKCj+yCdr1K0HrR4MGwa4aWS41W+9WntpW6DTsBn8AElQ+b999MbmZe/eNOXfmXbnf5JO5b/LmnHPPmcyZXKWUmtRKPQAfrWH9WosNCdvd6hl+nnv6Gmb9NosNCdtly6yBLe/ZuQ26jYvy6rlKMDdmDWx5z87t1G1cFKqeA/gYhNWGr6LauNbDRbfgNtyB445+NvP/LbDVWFdUm6XqsWA8m/kY7SKuh/AIHncRd1Z7sL8X9nnk+QSchFOZedc99QJewrQxt4v1uwOdMxfgIlyCI/g8Cse0+954BU14bcwdwsZhw05eznyUjfkmc+OMp+EMnHV8j7fwDt5Dkq6dgVnjP2bOpGSL+TLjFbgK1wT2wxuYM35fhxuqnTMp2WK+y3gP7sNEj/fPjmwxTzE+gaf6797oaL9WSYsP6XPoePNUFLNNI8Q+kr5H+qwacMCjbiHvfx0Rc9JiI343pTTS8V8V4/5H3hOD5pherMviWKQYOS9DS+Xcp2f1knx6loQ+wieY97Qj3bNc9Q2+ww9PO7F71jJ8Loc+T9+u539VFfIcKNNXiHPgHHbP63J9hTwH8nxJ1CnkOZDnS6JOIc+BPF+SeyJm35fcEzH7vuSeiNn3JfdCzL4vuRdi9v3Yd0Apxb4DSqmX74Dbtf25ajqo7c+1qq0yvlnHUBnfrGOojG/Wtaqrz/AFvsYOxFM/4Rf8jh2Ip1bQ+1ZCf8V74DriXw9DFX+Plnb8B+9Qq1Yo/QGno5+w
+   eJztmLtvFDEQh+0mICXQAUlDoADxaojSJBDuEJRQ8GiAlkCQSFqSNCENIJ41IJKFGqih4qhJFehoeIjwBwBSoOI73Z6wVt7LOZ61b9H9pE/es84zszOWx1qllLqvlXoAPupn/YDFhoTtdvUUP888fe1n/QGLDQnbRcusgS3v2bmduoGL8uq5WTA3Zg1sec/ODesGLgpVzy342ArbDF+tauNaDxfdgJtwC846+tnD//fCPmNdq9qsVY+vxrOZj2NtxPUQHsHjNuLO6hD2D8OYR57PwXm4kJl33VPP4QW8NOZGWD8a6Jy5CpMwBafweRrOaPe98QZq8NaYO4GNk4advJz5KBvzPHMXGcfhElx2fI9leA8fIEnXvoLXxn/MnEnJFvM1xmmYgVmB/fAOlozfc3BdNXImJVvMtxnvwF241+H9sylbzE8YF2BR/9sbTR3RKqnzMX0OHW+eWsVsU4XYK+l7pM+qCkc96hby/tcUMSd1duF3d0o1HderGPc/8p4Y1OpzlXRspRg5L0Jr5dynZ3WSfHqWhD7BZ/jiaUe6Z7nqB/yEX552YvesHnxugI2evl3P/7Iq5DlQpK8Q58AEdq/oYn2FPAfyfEnUKeQ5kOdLok4hz4E8X5J7Imbfl9wTMfu+5J6I2fcl90LMvi+5F2L2/dh3QCnFvgNKqZPvgAe1/blsOq7tz12VW0V8s46hIr5Zx1AR36y7Kq++wQp8jx2Ip1bhN/yJHYineul9fbCp5D1wO/EPwo6Sv0ddQ//BO3TVVSj9BQtXnwI=
   </data>
  </layer>
  <layer id="7" name="Forest" width="50" height="50" locked="1">
@@ -43,12 +43,12 @@
  </layer>
  <layer id="16" name="Teleport" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztz7ENgEAQA8ELvv9e4CsAKoBvCPdAgE6akTa3qwCAjrZRtac5/l7yzZH9Z7qa/7iz/0mr+Q8AAAAAAACAzl43QAb3
+   eJztz7ENgDAQA8AUSc0I7F8CEwATAAPBt2loKNBLd5Ll1i4FAMhoqqXMkaX+veSbNfZvkT35jyP2n5Er+Y+79p3V0PrOamx9AwAAAAAAAO8e4h4JbQ==
   </data>
  </layer>
  <layer id="8" name="Magic" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt2DEOgCAMAECCq///gou7i48zxkWMTqIWc7eUsRDaFFICqG/IX2dQx/STfUBkYy5jq+ZcRmDTd2WMxLzS7hns79O6NrNxx1l/itiz4E1qAAAAiKDFt4l/Brh2rAW1wZMWjDMHsw==
+   eJzt2D0OhCAQBlDDWnr/K9hsb+NRPIKHMNs5Riv/mM17zUcJhJkATQNwvb68PYNrDH+yDqjZt8TMaiwxedfUxsxqbmNm1H1i1sR9Je8erM/Tb+zOxhl7/anGngVPUgMAAEANMr5N/DPAsW0tqA3utAAsDgtT
   </data>
  </layer>
  <layer id="15" name="BlackFog" width="50" height="50">
@@ -313,22 +313,6 @@
     <property name="Y" type="float" value="600"/>
    </properties>
   </object>
-  <object id="37" x="1508" y="358" width="23.3333" height="20.6667">
-   <properties>
-    <property name="Height" type="float" value="20.6667"/>
-    <property name="Width" type="float" value="23.3333"/>
-    <property name="X" type="float" value="1508"/>
-    <property name="Y" type="float" value="358"/>
-   </properties>
-  </object>
-  <object id="38" x="1574.67" y="357.333" width="20" height="22.6667">
-   <properties>
-    <property name="Height" type="float" value="22.6667"/>
-    <property name="Width" type="float" value="20"/>
-    <property name="X" type="float" value="1574.67"/>
-    <property name="Y" type="float" value="357.333"/>
-   </properties>
-  </object>
   <object id="39" x="1379.33" y="664" width="117.333" height="159.333">
    <properties>
     <property name="Height" type="float" value="159.333"/>
@@ -465,15 +449,6 @@
     <property name="Y" type="float" value="632"/>
    </properties>
    <point/>
-  </object>
-  <object id="58" type="Teleport" x="1529" y="384" width="47" height="32">
-   <properties>
-    <property name="Height" type="float" value="32"/>
-    <property name="Width" type="float" value="47"/>
-    <property name="X" type="float" value="1529"/>
-    <property name="Y" type="float" value="384"/>
-   </properties>
-   <ellipse/>
   </object>
   <object id="59" x="2" y="601" width="30" height="32">
    <properties>
@@ -858,6 +833,37 @@
     <property name="X" type="float" value="1120"/>
     <property name="Y" type="float" value="538"/>
    </properties>
+  </object>
+  <object id="112" x="1533.33" y="352" width="36" height="28">
+   <properties>
+    <property name="Height" type="float" value="28"/>
+    <property name="Width" type="float" value="36"/>
+    <property name="X" type="float" value="1533.33"/>
+    <property name="Y" type="float" value="352"/>
+   </properties>
+  </object>
+  <object id="113" x="1504.67" y="447.333" width="31.3333" height="28">
+   <properties>
+    <property name="Height" type="float" value="28"/>
+    <property name="Width" type="float" value="31.33"/>
+    <property name="X" type="float" value="1504.67"/>
+    <property name="Y" type="float" value="447.33"/>
+   </properties>
+  </object>
+  <object id="114" x="1568" y="449.333" width="31.3333" height="27.3333">
+   <properties>
+    <property name="Height" type="float" value="27.33"/>
+    <property name="Width" type="float" value="31.33"/>
+    <property name="X" type="float" value="1568"/>
+    <property name="Y" type="float" value="449.33"/>
+   </properties>
+  </object>
+  <object id="115" type="TeleportPoint" x="1550.67" y="391.333">
+   <properties>
+    <property name="X" type="float" value="1550.67"/>
+    <property name="Y" type="float" value="391.33"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>
