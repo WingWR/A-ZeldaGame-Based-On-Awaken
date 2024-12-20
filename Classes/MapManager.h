@@ -7,7 +7,7 @@ USING_NS_CC;
 using namespace std;
 
 const int MapField = 1843;    //单张瓦片地图的大小
-const Vec2 RTPos = Vec2(258.5f, 1568.5f + 720.0f - 647.0f);    //RebirthTemple左上角的场景坐标，720.0f - 647.0f是消除误差的修正
+const Vec2 RTPos = Vec2(258.5f, 1568.5f + 720.0f - 647.0f + 720.0f - 647.0f-32.0f);    //RebirthTemple左上角的场景坐标，720.0f - 647.0f是消除误差的修正
 const float MapToSceneRatio = 1.151875f;    //瓦片地图坐标转场景坐标的比例
 
 class MapManager :public Node {

@@ -180,8 +180,6 @@ void MainGameScene::MainCameraFollowPlayer() {
 		Vec2 playerPosition = PLAYER->mySprite->getPosition();    //获取玩家位置
 		_cameraManager->UpdateCameraPosition(_cameraManager->GetMainCamera(), playerPosition, updatedCameraZ);    //更新摄像机位置
 		_mapManager->PlayerPositionInWhichMap(playerPosition);    //更新玩家所在地图
-		UnlockMapTeleport();        //解锁传送门函数
-		
 		}, "camera_update_key");
 }
 
@@ -230,13 +228,11 @@ void MainGameScene::KeyPressedForRevealMicroMap(EventKeyboard::KeyCode keyCode, 
 		  让玩家在进入小地图之前就暂停游戏，退出小地图之后再恢复游戏，防止玩家在打开地图的时候发生意外*/
 		if (_cameraManager->IsInMicroMap()) {
 			// 恢复主地图响应和摄像机逻辑
-			Director::getInstance()->resume();    //退出小地图恢复游戏
 			_cameraManager->SwitchToMainCamera();    //切换到主摄像机
 		}
 		else {
 			//进入小地图暂停游戏
 			_cameraManager->SwitchToMicroCamera();    //切换到小摄像机
-			Director::getInstance()->pause();     // 暂停游戏	
 		}
 
 		this->CameraFollowController();    //注册摄像机跟随玩家的函数

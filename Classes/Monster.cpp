@@ -11,7 +11,7 @@ void Monster::update(float dt) {
 	//¹ÖÎïAI
 	Vec2 mon = this->mySprite->getPosition();
 	x=getXY().x;
-
+	y=getXY().y;
 	static int nums = 50;
 	if (nums < 60) {
 		nums++;
@@ -64,11 +64,13 @@ void Monster::Attack() {
 			face_to = 1;
 			Creature::Attack();
 			target->Hurt();
+			target->DecreaseHp(DamageCal(this, target));
 		}
 		else {
 			face_to = 0;
 			Creature::Attack();
 			target->Hurt();
+			target->DecreaseHp(DamageCal(this, target));
 		}
 	}
 	else {
@@ -76,11 +78,13 @@ void Monster::Attack() {
 			face_to = 2;
 			Creature::Attack();
 			target->Hurt();
+			target->DecreaseHp(DamageCal(this, target));
 		}
 		else {
 			face_to = 3;
 			Creature::Attack();
 			target->Hurt();
+			target->DecreaseHp(DamageCal(this, target));
 		}
 	}
 }
@@ -265,6 +269,23 @@ MonsterState MonsterAI::GetState()const {
 	return currentState;
 }
 void MonsterRespawn::update(float dt) {
-	;
+	auto it= monster.begin();
+	for(it = monster.begin(); it != monster.end(); it++) {
+		if ((*it)->getIsDead()) {
+			(*it)->Revive();
+			(*it)->setPosition(monster_pos[it - monster.begin()]);
+		}
+	}
 }
- 
+//
+void MonsterBonus::init() {
+	monster_bonus1.exp = 10;
+	monster_bonus2.exp = 10;
+	monster_bonus3.exp = 10;
+	monster_bonus4.exp = 10;
+	monster_bonus5.exp = 10;
+	monster_bonus6.exp = 10;
+	monster_bonus7.exp = 10;
+	monster_bonus8.exp = 10;
+
+}

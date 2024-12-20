@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="10">
+ <tileset firstgid="1" source="../volcano/tf_A1_ashlands_3.tsx"/>
+ <layer id="1" name="BossRoom" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxby8DAsHYUj+JRPGAYAIosmA4=
+  </data>
+ </layer>
+ <objectgroup id="2" name="Obstacles">
+  <object id="6" x="-2" y="-4" width="8" height="488.667">
+   <properties>
+    <property name="Height" type="float" value="488.67"/>
+    <property name="Width" type="float" value="8"/>
+    <property name="X" type="float" value="-2"/>
+    <property name="Y" type="float" value="-4"/>
+   </properties>
+  </object>
+  <object id="7" x="0.666667" y="474" width="482.667" height="7.5">
+   <properties>
+    <property name="Height" type="float" value="7.5"/>
+    <property name="Width" type="float" value="482.67"/>
+    <property name="X" type="float" value="0.67"/>
+    <property name="Y" type="float" value="474"/>
+   </properties>
+  </object>
+  <object id="8" x="476" y="-1.33333" width="7.5" height="481.333">
+   <properties>
+    <property name="Height" type="float" value="481.33"/>
+    <property name="Width" type="float" value="7.5"/>
+    <property name="X" type="float" value="476"/>
+    <property name="Y" type="float" value="-1.33"/>
+   </properties>
+  </object>
+  <object id="9" x="-0.666667" y="-6" width="484.667" height="12">
+   <properties>
+    <property name="Height" type="float" value="12"/>
+    <property name="Width" type="float" value="484.67"/>
+    <property name="X" type="float" value="-0.67"/>
+    <property name="Y" type="float" value="-6"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

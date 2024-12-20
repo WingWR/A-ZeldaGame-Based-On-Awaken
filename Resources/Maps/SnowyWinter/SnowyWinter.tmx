@@ -824,7 +824,7 @@
   </object>
   <object id="104" type="InDoorPoint" x="1478.18" y="203.091">
    <properties>
-    <property name="SceneName" value="WinterInDoor"/>
+    <property name="SceneName" value="WinterHouse"/>
     <property name="X" type="float" value="1478.18"/>
     <property name="Y" type="float" value="203.09"/>
    </properties>

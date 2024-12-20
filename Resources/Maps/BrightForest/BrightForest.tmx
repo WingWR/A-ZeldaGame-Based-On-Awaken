@@ -6,6 +6,7 @@
  <tileset firstgid="676" source="TX Props.tsx"/>
  <tileset firstgid="932" source="TX Struct.tsx"/>
  <tileset firstgid="1188" source="../volcano/TX Props.tsx"/>
+ <tileset firstgid="1444" source="../Vol_Snow_Ecotonal/TX Props.tsx"/>
  <layer id="2" name="Ground" width="50" height="50" locked="1">
   <data encoding="base64" compression="zlib">
    eJzNmWty2kAQhJcYc4JUQCdIReIEtoH73ypQpS4+Nb2LZLCTH1OAtI+eV8/sciilHM5yPMvpLPsZsq3IOsjrWTZn6UbR88v4ftyb+2sc9/N1TuOzw7jGdny2VPqK3NNNWFoi7NrLdZBeW9igH9/dW9vlUBHXixiSr+aK1qAO8uVx/HQ7LVmb8XDCekmSr3aj8Puu3PpT+E5Bh1PJMV2L/dranJdwOG5+H0bp8V2/3Z/KLdehhpuxvqvIa8BFbLX8GcL3odTj1O2lnKAOeu95uivXWB8qsi63uO5h0t5JpxoXeJy4LzSus72kh/OK7J/8VsObcNXy5168UtcNPsnRxCs7pb3cd8nOnie0SSv/Ui74O/cPa8yptG3Tsv2xMtfjUdh8LbeJ8yvfEY/GaU9xpecpc6Vme+ZdirWErfb8Hu8z3lXrnGtTnlOfhJ/2TXbV/LWN3ZVpDLsQF7Ec4WONZRyl2uy8w55LOcVcSjnue3Z41gURbv6mfQfbvxvtI11f8bsWs8497u/UW6Z+KPWftD2x0aYD/MS1U51s1SCtm3iEPm71dN5jOifsy7XH4b5DmfaFjDXqoJz3+kT+1LqM3w57M1/u6UD84iPqsC7XGFIcCT/jYMA62tfrR62OdmWKYY1niZNqHEuc4mS+875ca3Fv2cB5d29zvWeS3bY2RuIYuZ/n6B5j5WPWM+9FGRt9udWhw9gN5ngN6fFuKFMdVOfII+ms6JzDuOE8cpDbpi+3OSj8GuN1O50N/NkQnouT3f60ofdtmi++8l5KdmYO1ji5Fcupn019udZj/JNbXQevReRg6s6cpm9lI/cl46ZV2/ks9biOnVicy1Jt9f7C/bi2ueRezythTrWdOu7M9uI+j1E/B5CPU65QH2ES1poOXZnqSh86v3r8Kcb2Npf9lHJJvZXubPxcT1u4PsKXuMLvUFLv5zrwvEKbpJ5dn+S1ZC/XJ/nIc4g1T5je4H/H35XbeKYdUs+VziDMEc95cl7NR+wf/U5vNQpzwvdKPE6+pF9Zl7oytQk5g/HGcb29S/ps8H1VpjbpbI+t7Z/wb0vdrl671BcTp/yU7q30Xndr1MfzIO1Hm7gPkk3dZ+5z5Wetj6Eu1G0o01xxTvc6d3n2Mor3g+Qf+cu5UPkmLvQ+kznkOc/+mr0Nz95+xvM5v4I4d2ot5zXag/Hmsev36sSr+OA5uXa/rHWox5+G+LkgcZFzuN8dpbMeecjjgzp4HWyt+9EQ9mp+ZnKbpj6Vuns99vMxa3nrzMtxPfz9syFuQ6/rqQekz/xOT2ul/2ecS1v/sQgf8/N3Q/w8z77e+w3vVWt1UN/dF167W7gkl3mqN28N2Yx6e/4SO/OYQh72u7Ra3yF8LUwu76WdGx9Bf+ZL4qpks9r+mtONNkrYLpz5slCcq1bBNzyfsv6xh1EN4pncexnh78O+LqketCTppnxame31XnnL/z3EbcKpusgxfcX/Se7pOUfvl3LtG+eK8mD4xFzK3Nifo/eqtHm5xtXy0Ry8S9evSUvvy/uUu8/ENodfH5G3B7Au3ecr5f0BrM/mf5dL3i7hsM9iFbZH8vxZ8mMm1qV16l/I0hr0v8p3+j71FM+SOT57Bvd/tZ0+2898p8yx01+HIg/z
@@ -43,12 +44,12 @@
  </layer>
  <layer id="16" name="Teleport" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJztz7ENgDAQA8AUSc0I7F8CEwATAAPBt2loKNBLd5Ll1i4FAMhoqqXMkaX+veSbNfZvkT35jyP2n5Er+Y+79p3V0PrOamx9AwAAAAAAAO8e4h4JbQ==
+   eJztz7ENgDAQA8AoGYAR2L8EJgAmAAaCb9PQUKCX7iTLrV0KAJDRVEuZI0v9e8k3a+zfInvyH0fsPyNX8h937TurofWd1dj6BgAAAAAAAN49ay8JTw==
   </data>
  </layer>
  <layer id="8" name="Magic" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt2D0OhCAQBlDDWnr/K9hsb+NRPIKHMNs5Riv/mM17zUcJhJkATQNwvb68PYNrDH+yDqjZt8TMaiwxedfUxsxqbmNm1H1i1sR9Je8erM/Tb+zOxhl7/anGngVPUgMAAEANMr5N/DPAsW0tqA3utAAsDgtT
+   eJzt2LEJgDAQBdAQW/dfwcbexlEcwSHEzhMtJTl8r/lpA/cPklIAANqZa8ys1hqTtrYaM6u9xsxoHGLSlynpbF3n6TwvSe9BH572k53F3+kAAADQg4xvE/8M8O7eBd3gSwdzsgiH
   </data>
  </layer>
  <layer id="15" name="BlackFog" width="50" height="50">
@@ -786,14 +787,6 @@
     <property name="Y" type="float" value="162.667"/>
    </properties>
   </object>
-  <object id="104" x="926" y="188" width="35" height="35">
-   <properties>
-    <property name="Height" type="float" value="35"/>
-    <property name="Width" type="float" value="35"/>
-    <property name="X" type="float" value="926"/>
-    <property name="Y" type="float" value="188"/>
-   </properties>
-  </object>
   <object id="105" x="1450" y="350" width="9" height="92">
    <properties>
     <property name="Height" type="float" value="92"/>
@@ -824,14 +817,6 @@
     <property name="Width" type="float" value="51"/>
     <property name="X" type="float" value="1545"/>
     <property name="Y" type="float" value="709"/>
-   </properties>
-  </object>
-  <object id="110" x="1120" y="538" width="30" height="34">
-   <properties>
-    <property name="Height" type="float" value="34"/>
-    <property name="Width" type="float" value="30"/>
-    <property name="X" type="float" value="1120"/>
-    <property name="Y" type="float" value="538"/>
    </properties>
   </object>
   <object id="112" x="1533.33" y="352" width="36" height="28">

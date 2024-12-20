@@ -102,23 +102,75 @@ public:
 	int GetFollowRange()const;
 
 };
+// 怪物奖励
+class MonsterBonus {
+public:
+	friend class MonsterRespawn;
+	Bonus monster_bonus1;
+	Bonus monster_bonus2;
+	Bonus monster_bonus3;
+	Bonus monster_bonus4;
+	Bonus monster_bonus5;
+	Bonus monster_bonus6;
+	Bonus monster_bonus7;
+	Bonus monster_bonus8;
+public:
+	void init();
+};
 // 怪物刷新类
 // 在此定义怪的种类
 class MonsterRespawn:Node {
 	vector<Monster*> monster;
+	vector<Vec2> monster_pos;
 	Monster* monster1;
 	Monster* monster2;
+	Monster* monster3;
+	Monster* monster4;
+	Monster* monster5;
+	Monster* monster6;
+	Monster* monster7;
+	Monster* monster8;
+
+
 public:
 	
 	MonsterRespawn(Player* player, Scene* scene) {
 		// name,hp,mp,atk,atk_range,def,speed,level,x,y,exp,bonus,player,follow_range,scale,scene) :
-		Bonus b;
-		monster1 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 1000, 100, 0, b, player, 1000, 1, scene);
-		monster2 = new Monster("Monster2", 100000, 600, 20, 40, 20, 100, 2, 1000, 100, 0, b, player, 1000, 1, scene);
+		MonsterBonus bonus;
+		monster1 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 1000, 100, 0, bonus.monster_bonus1, player, 1000, 1, scene);
+		monster2 = new Monster("Monster2", 100000, 600, 20, 40, 20, 100, 2, 3000, 2000, 0, bonus.monster_bonus2, player, 1000, 1, scene);
+		monster3 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 500, -100, 0, bonus.monster_bonus3, player, 1000, 1, scene);
+		monster4 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 600, -200, 0, bonus.monster_bonus4, player, 1000, 1, scene);
+		monster5 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, -500, 100, 0, bonus.monster_bonus5, player, 1000, 1, scene);
+		monster6 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, -100, -100, 0, bonus.monster_bonus6, player, 1000, 1, scene);
+		monster7 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 1500, 1200, 0, bonus.monster_bonus7, player, 1000, 1, scene);
+		monster8 = new Monster("Monster1", 100000, 600, 20, 40, 20, 100, 2, 600, 400, 0, bonus.monster_bonus8, player, 1000, 1, scene);
 		monster.push_back(monster1);
 		monster.push_back(monster2);
+		monster.push_back(monster3);
+		monster.push_back(monster4);
+		monster.push_back(monster5);
+		monster.push_back(monster6);
+		monster.push_back(monster7);
+		monster.push_back(monster8);
+		monster_pos.push_back(Vec2(1000, 100));
+		monster_pos.push_back(Vec2(3000, 2000));
+		monster_pos.push_back(Vec2(500, -100));
+		monster_pos.push_back(Vec2(600, -200));
+		monster_pos.push_back(Vec2(-500, 100));
+		monster_pos.push_back(Vec2(-100, -100));
+		monster_pos.push_back(Vec2(1500, 1200));
+		monster_pos.push_back(Vec2(600, 400));
+
 		scene->addChild(monster1);
 		scene->addChild(monster2);
+		scene->addChild(monster3);
+		scene->addChild(monster4);
+		scene->addChild(monster5);
+		scene->addChild(monster6);
+		scene->addChild(monster7);
+		scene->addChild(monster8);
+
 		this->scheduleUpdate();
 	}
 	void update(float dt)override;
@@ -126,5 +178,6 @@ public:
 		return monster;
 	}
 };
+
 #endif __MONSTER_H__
 

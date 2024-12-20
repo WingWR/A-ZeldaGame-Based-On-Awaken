@@ -14,6 +14,7 @@ void Player::update(float dt) {
     else {
         nums = 0;
       
+        
         log("player**********************************");
         log("position:%f %f", pos.x, pos.y);
         log("hp:%d", hp);
@@ -62,14 +63,14 @@ void Player::update(float dt) {
         }
     }
 
-    //// 计算血量占总血量的比例
+    //// ����Ѫ��ռ��Ѫ���ı���
     //float healthPercentage = (float)current_hp / (float)hp;
 
-    //// 获取当前血条的宽度
+    //// ��ȡ��ǰѪ���Ŀ��
     //Size healthBarSize = healthBar->getContentSize();
-    //healthBar->setScaleX(healthPercentage);  // 调整血条的横向缩放比例
+    //healthBar->setScaleX(healthPercentage);  // ����Ѫ���ĺ������ű���
 
-    //// 更新hp值
+    //// ����hpֵ
     //hpLabel->setString("hp:" + to_string(current_hp));
 }
 
@@ -77,8 +78,8 @@ void Player::Init(vector<Monster*>monster, MapManager* map_manager) {
     this->monster = monster;
     this->map_manager = map_manager;
 }
-// 人物攻击
-// 攻击范围是扇形
+// ���﹥��
+// ������Χ������
 Animate* Player::Attack(vector<Monster*> monster) {
     int dir = getDir();
     Vec2 pos_player = mySprite->getPosition();
@@ -86,39 +87,47 @@ Animate* Player::Attack(vector<Monster*> monster) {
         Vec2 pos_monster = monster[i]->mySprite->getPosition();
         float distance = pos_monster.distance(pos_player);
         if (distance < atk_range) {
-            Vec2 direction = pos_monster - pos_player;// 人物指向怪物
-            float k = (direction.x + 1.0 - 1.0) / direction.y;// 斜率
-            if (dir == 0 && k<1 && k>-1 && direction.x < 0)// 向左
+            Vec2 direction = pos_monster - pos_player;// ����ָ�����
+            float k = (direction.x + 1.0 - 1.0) / direction.y;// б��
+            if (dir == 0 && k<1 && k>-1 && direction.x < 0) {// ����
                 monster[i]->Hurt();
-            else if (dir == 1 && k<1 && k>-1 && direction.x > 0)// 右
+                monster[i]->DecreaseHp(DamageCal(this, monster[i]));
+            }
+            else if (dir == 1 && k<1 && k>-1 && direction.x > 0) {// ��
                 monster[i]->Hurt();
-            else if (dir == 2 && (k < -1 || k>1) && direction.y > 0)// 上
+                monster[i]->DecreaseHp(DamageCal(this, monster[i]));
+            }
+            else if (dir == 2 && (k < -1 || k>1) && direction.y > 0) {// ��
                 monster[i]->Hurt();
-            else if (dir == 3 && (k < -1 || k>1) && direction.y < 0)// 下
+                monster[i]->DecreaseHp(DamageCal(this, monster[i]));
+            }
+            else if (dir == 3 && (k < -1 || k>1) && direction.y < 0) {// ��
                 monster[i]->Hurt();
+                monster[i]->DecreaseHp(DamageCal(this, monster[i]));
+            }
         }
     }
     Creature::Attack();
     return nullptr;
 }
 
-// Player获得奖励
+// Player��ý���
 void Player::GetBonus(Bonus bonus) {
-    //经验奖励
+    //���齱��
     current_exp += bonus.exp;
-    //升级
+    //����
     while (current_exp >= next_level_exp) {
         current_exp -= next_level_exp;
         level++;
         next_level_exp *= (1 + level * 0.1);
     }
 
-    //物品奖励
-    //暂待，需物品和装备
+    //��Ʒ����
+    //�ݴ�������Ʒ��װ��
 
 }
 
-// 判断交互范围
+// �жϽ�����Χ
 bool Player::isTrigger(const Vec2& pos) {
 
     int dx = mySprite->getPosition().x - pos.x;
@@ -127,7 +136,7 @@ bool Player::isTrigger(const Vec2& pos) {
     return std::pow(dx, 2) + std::pow(dy, 2) <= std::pow(DIST, 2);
 
 }
-// 改变is_moving
+// �ı�is_moving
 void Player::ChangeIsMoving() {
     if (is_moving == 1) {
         is_moving = 0;
