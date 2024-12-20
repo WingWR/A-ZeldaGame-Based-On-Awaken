@@ -10,7 +10,7 @@ USING_NS_CC;
 using namespace std;
 
 // 触发距离
-const int DIST = 50;
+const int DIST = 100;
 
 struct Bonus {
 	//Object object;
@@ -49,19 +49,12 @@ public:
 		mySprite->setAnchorPoint(Vec2(0.5f, 0.1f));
 		scene->addChild(this);
 		this->scheduleUpdate();
-		
+
 		// 初始化血条
 		healthBarBackground = Sprite::create("health/health_bg.png");
 		healthBarBackground->setAnchorPoint(Vec2(0, 1));
 		healthBarBackground->setPosition(Vec2(-920, 800));  
 		this->mySprite->addChild(healthBarBackground);
-
-		healthBar = Sprite::create("health/health_bar.png");  
-		healthBar->setAnchorPoint(Vec2(0, 1));
-		healthBar->setPosition(Vec2(-920, 800));
-		healthBar->setColor(Color3B::RED);
-		this->mySprite->addChild(healthBar);
-
 		// 显示hp值
 		hpLabel = Label::createWithTTF("hp:" + to_string(current_hp), "fonts/arial.ttf", 18);
 		hpLabel->setAnchorPoint(Vec2(0, 1));

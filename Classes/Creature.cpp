@@ -1,93 +1,118 @@
 #include "Creature.h"
 
+/******************************* 碰撞相关 *************************************/
 /* 初始化精灵 */
 void Creature::initSprite() {
-    // 精灵初始化
-    /*mySprite = Sprite::create("Role/" + role + "/1.png");
-    mySprite->setPosition(Vec2(x, y));
-    mySprite->setScale(scale);
-    scene->addChild(mySprite);*/
-
     // 创建精灵
     mySprite = Sprite::create("Role/" + role + "/1.png");
     if (!mySprite) {
         CCLOG("Fail to create sprite.");
         return;
     }
+
     // 创建碰撞框
-    PhysicsMaterial material;
-    material.restitution = 0.0f;
-    PhysicsBody* body = PhysicsBody::createBox(Size(0, 0), material); // 默认
-    // 各人物碰撞框数值
-    std::unordered_map<std::string, int> bodyMap = {
-    {"Player1", 1},
-    {"Player2", 2},
-    {"Player3", 3},
-    {"Player4", 4},
-    {"Player5", 5},
-    {"npc0", 14},
-    {"npc1", 11},
-    {"npc2", 12},
-    {"npc3", 13},
-    {"npc4", 14},
-    {"npc5", 15},
-    {"npc6", 16},
-    {"npc7", 17}
+    std::unordered_map<std::string, Size> bodySizeMap = {
+        {"Player1", Size(40, 70)},//
+        {"Player2", Size(40, 60)},
+        {"Player3", Size(40, 70)},
+        {"Player4", Size(40, 70)},
+        {"Player5", Size(40, 70)},
+        {"npc0", Size(60, 60)},
+        {"npc1", Size(40, 60)},
+        {"npc2", Size(50, 80)},
+        {"npc3", Size(50, 80)},
+        {"npc4", Size(50, 80)},
+        {"npc5", Size(50, 65)}, 
+        {"npc6", Size(50, 65)},
+        {"npc7", Size(50, 75)}
     };
 
-    switch (bodyMap[role]) {
-    /***************** Player *****************/
-    case(1):
-    case(2):
-    case(4):
-        body = PhysicsBody::createBox(Size(80, 130), material);
-        body->setPositionOffset(Vec2(0, -10));
-        break;
-    case(3):
-    case(5):
-        body = PhysicsBody::createBox(Size(80, 100), material);
-        body->setPositionOffset(Vec2(0, -20));
-        break;
-    /****************** npc ******************/
-    case(11):
-        body = PhysicsBody::createBox(Size(60, 60), material);
-        body->setPositionOffset(Vec2(0, -40));
-        break;
-    case(12):
-    case(13):
-    case(14):
-    case(17):
-        body = PhysicsBody::createBox(Size(80, 115), material);
-        body->setPositionOffset(Vec2(0, -15));
-        break;
-    case(15):
-    case(16):
-        body = PhysicsBody::createBox(Size(80, 110), material);
-        body->setPositionOffset(Vec2(0, -30));
-        break;
-        /************** Monster **************/
-
-    default:
-        break;
+    if (bodySizeMap.find(role) != bodySizeMap.end()) {
+        collisionBoxSize = bodySizeMap[role];  // 根据角色设置碰撞框大小
+        if (role == "Player1" || role == "Player2" || role == "Player3" || role == "Player4" || role == "Player5")
+            collisionBoxOffset = Vec2(0, 30);
+        else if(role == "npc1" || role == "npc7")
+            collisionBoxOffset = Vec2(0, -30);
+        else if (role == "npc2" || role == "npc3" || role == "npc4" || role == "npc5" || role == "npc6")
+            collisionBoxOffset = Vec2(0, -20);
     }
 
-    // 禁用旋转
-    body->setRotationEnable(false);  
-    // npc设为静止
-    body->setDynamic(true);
-    if (role == "npc0" || role == "npc1" || role == "npc2" || role == "npc3" || role == "npc4" || role == "npc5" || role == "npc6") {
-        body->setDynamic(false);
-    }
-    // 将碰撞框添加到精灵身上
-    if (body) {
-        mySprite->setPhysicsBody(body);
-    }
     // 添加精灵至场景中   
     mySprite->setPosition(Vec2(x, y));
     mySprite->setScale(scale);
-    scene->addChild(mySprite,0);
+    scene->addChild(mySprite, 0);
+   
+    // 碰撞框
+#if DEBUG
+    drawCollisionBox();
+#else
+#endif
 }
 
+/* 防止碰撞 */
+void Creature::preventOverlap(Creature* creature1, Creature* creature2) {
+    Rect rect1 = creature1->getCollisionRect();
+    Rect rect2 = creature2->getCollisionRect();
+    // 检测是否重叠
+    if (rect1.intersectsRect(rect2)) {
+        CCLOG("Collision detected.");
+        Vec2 pos1 = creature1->mySprite->getPosition();
+        Vec2 pos2 = creature2->mySprite->getPosition();
+        Vec2 separation = pos1 - pos2;
+        separation.normalize(); 
+        // 每次分离的距离
+        float separationDistance = 3.0f;
+        // 调整creature1的位置
+        creature1->mySprite->setPosition(pos1 + separation * separationDistance);
+    }
+}
+
+/* 碰撞检测 */
+bool Creature::isCollision(const Rect& rect1, const Rect& rect2) {
+    bool result = rect1.intersectsRect(rect2);
+    if (result)
+        canMove = false;
+    else
+        canMove = true;
+    return result;
+}
+
+/* 获取碰撞框 */
+Rect Creature::getCollisionRect() const {
+    // 获取精灵当前的位置和尺寸
+    Vec2 spritePosition = mySprite->getPosition();
+    Size spriteSize = collisionBoxSize;
+
+    // 计算碰撞框的 Rect
+    Rect collisionRect(
+        spritePosition.x - spriteSize.width / 2 + collisionBoxOffset.x,
+        spritePosition.y - spriteSize.height / 2 + collisionBoxOffset.y,
+        spriteSize.width,
+        spriteSize.height
+    );
+
+    return collisionRect;
+}
+
+/* 画碰撞框 */
+void Creature::drawCollisionBox() {
+    auto drawNode = DrawNode::create();
+    Vec2 rectOrigin(
+        -collisionBoxSize.width / 2 + collisionBoxOffset.x,
+        -collisionBoxSize.height / 2 + collisionBoxOffset.y
+    );
+    Vec2 rectEnd(
+        collisionBoxSize.width / 2 + collisionBoxOffset.x,
+        collisionBoxSize.height / 2 + collisionBoxOffset.y
+    );
+    // 设置矩形框的颜色和线条宽度
+    drawNode->drawRect(rectOrigin, rectEnd, Color4F(1.0, 0.0, 0.0, 1.0)); // 红色边框
+    drawNode->setPosition(mySprite->getPosition());
+    scene->addChild(drawNode, 1);
+}
+
+
+/******************************* 动画相关 *************************************/
 /* 攻击动画 */
 Animate* Creature::Attack(int dir, Creature* opp) {
     // 死了,直接返回
@@ -312,24 +337,17 @@ Animate* Creature::Move(int dir) {
     int start = 1;
     if (face_to == DOWN) {
         start = 1;
-
-
-
     }
     else if (face_to == LEFT) {
         start = 5;
-
     }
 
     else if (face_to == RIGHT) {
         start = 9;
-
     }
 
     else if (face_to == UP) {
         start = 13;
-
-
     }
 
 
@@ -361,18 +379,15 @@ Animate* Creature::Move(int dir) {
     Animate* animate = Animate::create(animation);
 
     // 创建移动动作
-   // auto moveAction = MoveBy::create(0.8f, moveBy);
-   //log("MoveBy:%f%f", moveBy.x, moveBy.y);
+    // auto moveAction = MoveBy::create(0.8f, moveBy);
+    //log("MoveBy:%f%f", moveBy.x, moveBy.y);
     // 同时执行动画和移动
     //auto moveAndAnimate = Spawn::createWithTwoActions(animate, moveAction);
 
     // 执行动作
-
-
     mySprite->runAction(animate);
     log("Move");
     return animate;
-
 }
 
 /* 死亡 */
@@ -409,6 +424,8 @@ void Creature::Revive() {
     mySprite->setPosition(Vec2(mySprite->getPosition().x, mySprite->getPosition().y + 30));
 }
 
+
+/******************************* 属性相关 *************************************/
 /* 等级加成 */
 void Creature::levelBonus() {
     speed = speed * (0.05 * level + 1);
@@ -422,11 +439,13 @@ void Creature::levelBonus() {
 int Creature::DamageCal(Creature* a, Creature* b) {
     return a->getAtk() - b->getDef();
 }
-// 设置属性
-void Creature::setElementType(ElementType _elementType)
-{
+
+/* 设置属性 */
+void Creature::setElementType(ElementType _elementType){
     elementType = _elementType;
 }
+
+/* 更改坐标 */
 void Creature::ChangeXY(Vec2 change) {
     x += change.x;
     y += change.y;

@@ -109,6 +109,13 @@ void MainGameScene::LoadBagToScene() {
 void MainGameScene::LoadPlayerToScene() {
 	// Íæ¼Ò
 	PLAYER = new Player("Player" + std::to_string(SetPlayerScene::who + 1), this, VisibleSize.width / 2, VisibleSize.height / 2, 0.5f, 100, 50, 20, 50, 10, 192, 1);
+	
+	this->schedule([=](float dt) {
+		for (auto npc : _npcManager->visitNPC()) {
+			PLAYER->preventOverlap(PLAYER, npc);
+		}
+		}, 0.001f, "player_check_collision_scheduler");
+	
 }
 
 void MainGameScene::LoadMonsterRespawnToScene() {
@@ -138,7 +145,7 @@ void MainGameScene::LoadNPCToScene() {
 		for (auto npc : _npcManager->visitNPC()) {
 			npc->update();
 		}
-		}, 0.2f, "npc_check_scheduler");
+		}, 0.1f, "npc_check_scheduler");
 }
 
 void MainGameScene::LoadBackgroundMusicToScene() {
@@ -247,25 +254,36 @@ void MainGameScene::KeyPressedForBag(EventKeyboard::KeyCode keyCode, Event* even
 }
 
 void MainGameScene::KeyPressedForPlayerMove(EventKeyboard::KeyCode keyCode, Event* event) {
-	//int speed = 10;
 	int speed = PLAYER->getSpeed();
 	/* ÒÆ¶¯:W/S/A/D */
 	if (keyCode == EventKeyboard::KeyCode::KEY_W) {
-		PLAYER->ChangeIsMoving();
-		HandlePlayerMove(Vec2(0, speed), 0, "MoveUP", UP);
+		if (PLAYER->canMove) {
+			PLAYER->ChangeIsMoving();
+			HandlePlayerMove(Vec2(0, speed), 0, "MoveUP", UP);
+		}
+		
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_S) {
-		PLAYER->ChangeIsMoving();
-		log("1");
-		HandlePlayerMove(Vec2(0, -speed), 1, "MoveDOWN", DOWN);
+		if (PLAYER->canMove) {
+			PLAYER->ChangeIsMoving();
+			log("1");
+			HandlePlayerMove(Vec2(0, -speed), 1, "MoveDOWN", DOWN);
+		}
+		
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_A) {
-		PLAYER->ChangeIsMoving();
-		HandlePlayerMove(Vec2(-speed, 0), 2, "MoveLEFT", LEFT);
+		if (PLAYER->canMove) {
+			PLAYER->ChangeIsMoving();
+			HandlePlayerMove(Vec2(-speed, 0), 2, "MoveLEFT", LEFT);
+		}
+		
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_D) {
-		PLAYER->ChangeIsMoving();
-		HandlePlayerMove(Vec2(speed, 0), 3, "MoveRIGHT", RIGHT);
+		if (PLAYER->canMove) {
+			PLAYER->ChangeIsMoving();
+			HandlePlayerMove(Vec2(speed, 0), 3, "MoveRIGHT", RIGHT);
+		}
+		
 	}
 
 	Vec2 playerPosition = PLAYER->mySprite->getPosition();
@@ -324,11 +342,24 @@ void MainGameScene::HandlePlayerMove(const Vec2& moveBy, int keyIndex, const std
 }
 
 void MainGameScene::KeyPressedForPlayerAttack(EventKeyboard::KeyCode keyCode, Event* event) {
+	static bool canAttack = true;
+	
 	/* ¹¥»÷:J */
 	if (keyCode == EventKeyboard::KeyCode::KEY_J) {
-		CCLOG("into attack");
-		PLAYER->Attack(_monsterRespawn->GetMonster());
-		CCLOG("out attack");
+		if (canAttack) {
+			canAttack = false; 
+			CCLOG("into attack");
+			PLAYER->Attack(_monsterRespawn->GetMonster());
+			CCLOG("out attack");
+
+			this->scheduleOnce([&](float dt) {
+				canAttack = true; // 2Ãëºó»Ö¸´¹¥»÷×´Ì¬
+				CCLOG("Attack ready again");
+				}, 3.0f, "attack_cooldown_timer");
+		}
+		else {
+			CCLOG("Attack on cooldown, please wait");
+		}
 	}
 }
 

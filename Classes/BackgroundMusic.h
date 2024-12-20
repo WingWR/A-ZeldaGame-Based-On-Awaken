@@ -6,8 +6,10 @@
 #include "audio/include/AudioEngine.h"
 #include "string"
 #include "Player.h"
+#include "audio/include/AudioEngine.h"
 USING_NS_CC;
 using namespace std;
+
 
 class music : public cocos2d::Node
 {

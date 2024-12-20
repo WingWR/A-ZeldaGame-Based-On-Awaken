@@ -166,7 +166,7 @@ void LearningScene::learnAttack_1() {
     titleTxt->setTextColor(Color4B(0, 0, 0, 255));
     this->addChild(titleTxt, 1);
     /* atkTxt */
-    auto atkTxt = Label::createWithTTF("Press I/K/J/L to release forward/backward/left/right attack. ", "fonts/Lacquer.ttf", 40);
+    auto atkTxt = Label::createWithTTF("Press J to attack. Cool-down time exists.", "fonts/Lacquer.ttf", 40);
     atkTxt->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - 250));
     atkTxt->setTextColor(Color4B(0, 0, 0, 255));
     this->addChild(atkTxt, 1);
@@ -199,12 +199,12 @@ void LearningScene::learnAttack_2() {
     titleTxt->setTextColor(Color4B(0, 0, 0, 255));
     this->addChild(titleTxt, 1);
     /* atkTxt */
-    auto atkTxt = Label::createWithTTF("Press I/K/J/L to release forward/backward/left/right attack.", "fonts/Lacquer.ttf", 40);
+    auto atkTxt = Label::createWithTTF("Press J to attack. Cool-down time exists.", "fonts/Lacquer.ttf", 40);
     atkTxt->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - 250));
     atkTxt->setTextColor(Color4B(0, 0, 0, 255));
     this->addChild(atkTxt, 1);
     /* ¼üÅÌÍ¼ */
-    auto keyboardPic = Sprite::create("Others/KeyButtonIJKL.png");
+    auto keyboardPic = Sprite::create("Others/KeyButtonJ.png");
     keyboardPic->setPosition(Vec2(visibleSize.width / 2 - 400, visibleSize.height - 150));
     keyboardPic->setScale(0.8f);
     this->addChild(keyboardPic, 1);
@@ -445,8 +445,7 @@ void LearningScene::finish() {
 /* ¼üÅÌ¼àÌý:Move */
 void LearningScene::MoveKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
 	Vec2 moveBy;
-	int speed = 30;
-	
+	int speed = 50;
 	/* ÒÆ¶¯:W/S/A/D */
 	if (keyCode == EventKeyboard::KeyCode::KEY_W) {
 		moveBy = Vec2(0, speed);
@@ -528,7 +527,7 @@ void LearningScene::KeyReleased(EventKeyboard::KeyCode keyCode, Event* event) {
 /* ¼üÅÌ¼àÌý:Move+Atk */
 void LearningScene::KeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     Vec2 moveBy;
-    int speed = 30;
+    int speed = 50;
 
     /* ÒÆ¶¯:W/S/A/D */
     if (keyCode == EventKeyboard::KeyCode::KEY_W) {
@@ -589,7 +588,7 @@ void LearningScene::KeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
 /* ¼üÅÌ¼àÌý:Move+Atk+Chat */
 void LearningScene::ChatKeyPressed(EventKeyboard::KeyCode keyCode, Event* event) {
     Vec2 moveBy;
-    int speed = 30;
+    int speed = 50;
 
     /* ÒÆ¶¯:W/S/A/D */
     if (keyCode == EventKeyboard::KeyCode::KEY_W) {
@@ -636,15 +635,9 @@ void LearningScene::ChatKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
                 }, 0.8f, "MoveRIGHT");
         }
     }
-    /* ¹¥»÷:I/K/J/L */
-    else if (keyCode == EventKeyboard::KeyCode::KEY_I)
-        LEARNER->Creature::Attack(UP);
-    else if (keyCode == EventKeyboard::KeyCode::KEY_K)
-        LEARNER->Creature::Attack(DOWN);
+    /* ¹¥»÷:J */
     else if (keyCode == EventKeyboard::KeyCode::KEY_J)
-        LEARNER->Creature::Attack(LEFT);
-    else if (keyCode == EventKeyboard::KeyCode::KEY_L)
-        LEARNER->Creature::Attack(RIGHT);
+        LEARNER->Creature::Attack(LEARNER->getDir());
     /* ¶Ô»° */
     else if (keyCode == EventKeyboard::KeyCode::KEY_C) {
         CHATNPC->Chat();

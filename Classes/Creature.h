@@ -2,8 +2,10 @@
 #define __CREATURE_H__
 #include "cocos2d.h"
 #include <vector>
-USING_NS_CC;
 #include "ElementType.h"
+
+USING_NS_CC;
+
 /* 方向 */
 enum dir {
 	LEFT,    // 0
@@ -14,8 +16,9 @@ enum dir {
 
 /* 生物基类 */
 class Creature :public Node {
+	/************************** protected **************************/
 protected:
-	std::string role;   // 角色名:用于检索图片素材
+	std::string role; // 角色名:用于检索图片素材
 
 	bool isDead;      // 生死状态
 	int hp;           // 总生命
@@ -29,27 +32,33 @@ protected:
 	int level;        // 等级
 	int x, y;         // 位置
 	ElementType elementType; // 属性
+
 	float scale;      // 缩放比例
 	Scene* scene;     // 场景指针
+
+	/************************** public **************************/
 public:
+	/* 精灵相关 */
 	Sprite* mySprite; // 精灵
 	int face_to;      // 面朝方向
 
+	/* 碰撞相关 */
+	bool canMove = true;                   // 是否可移动
+	Size collisionBoxSize = Size(0, 0);    // 碰撞框大小
+	Vec2 collisionBoxOffset = Vec2(0, 0);  // 碰撞框偏移量
+	Rect getCollisionRect() const;         // 获取碰撞框
+	bool isCollision(const Rect& rect1, const Rect& rect2);        // 判断碰撞
+	void preventOverlap(Creature* creature1, Creature* creature2); // 防止碰撞
+	void Creature::drawCollisionBox();     // 画碰撞框:调试用
+
 	/* 构造函数 */
-	// who:玩家为Player1~Player5,NPC为npc1~npc5
-	// 建议:speed默认设为50,atk_range默认设100
 	Creature(std::string role, int hp, int mp, int atk, int atk_range, int def, int speed, int level, int x, int y, float scale, Scene* scene) :
 		role(role), hp(hp), mp(mp), atk(atk), atk_range(atk_range), def(def), speed(speed), level(level), scale(scale),
 		face_to(DOWN), isDead(false), scene(scene), mySprite(nullptr), current_hp(hp), current_mp(mp), x(x), y(y) {
-
-		// 精灵初始化
-		mySprite = Sprite::create("Role/" + role + "/1.png");
-		mySprite->setPosition(Vec2(x, y));
-		mySprite->setScale(scale);
-		scene->addChild(mySprite);
+		// 初始化精灵
+		initSprite();
 		// 初始元素为无
 		this->setElementType(NONE);
-
 		levelBonus();
 	}
 
@@ -71,15 +80,14 @@ public:
 		level = 1;
 	}
 
-
-	/*初始化精灵*/
+	/* 初始化精灵 */
 	void initSprite();
 
 	/* 释放攻击技能 */
-	// dir为方向:LEFT RIGHT UP DOWN,默认为DOWN
-	// 对于部分怪物,无方向一说:Monster1树妖
 	// opp为攻击对象
 	virtual Animate* Attack(int dir = DOWN, Creature* opp = nullptr);
+	virtual Animate* Attack(Creature* opp = nullptr);
+	int getDir() { return face_to; }
 
 	/* 受伤 */
 	virtual void Hurt();
@@ -95,7 +103,6 @@ public:
 	virtual void Heal();
 
 	/* 移动 */
-	// Monster1:树妖,无法移动
 	virtual Animate* Move(int dir);
 
 	/* 转变场景 */
@@ -109,34 +116,23 @@ public:
 	int DamageCal(Creature*, Creature*);
 
 	/* 返回变量值 */
-	bool ChangeIsDead(bool change) {
-		isDead = change;
-	}
-	bool getIsDead() {
-		return isDead;
-	}
-	// 返回速度speed
-	int getSpeed()const { return speed; }
-	// 返回总hp
-	int getHp()const { return hp; }
-	// 返回现hp
-	int getCurrentHp()const { return current_hp; }
-	// 返回总mp
-	int getMp()const { return mp; }
-	// 返回现mp
-	int getCurrentMp()const { return current_mp; }
-	// 返回atk
-	int getAtk()const { return atk; }
-	// 返回def
-	int getDef()const { return def; }
-	// 返回攻击范围atk_range
-	int getAtkRange()const { return atk_range; }
-	// 设置属性
+	bool ChangeIsDead(bool change) { isDead = change; }
+	bool getIsDead() { return isDead; }            // 返回是否死亡
+	int getSpeed()const { return speed; }          // 返回速度speed
+	int getHp()const { return hp; }                // 返回总hp
+	int getCurrentHp()const { return current_hp; } // 返回现hp
+	int getMp()const { return mp; }                // 返回总mp
+	int getCurrentMp()const { return current_mp; } // 返回现mp
+	int getAtk()const { return atk; }              // 返回atk
+	int getDef()const { return def; }              // 返回def
+	int getAtkRange()const { return atk_range; }   // 返回攻击范围atk_range
+
+	/* 设置属性 */
 	void setElementType(ElementType _elementType);
 
-	// 返回坐标
+	/* 坐标相关操作 */
 	Vec2 getXY()const { return Vec2(mySprite->getPosition().x, mySprite->getPosition().y); }
-
 	void ChangeXY(Vec2 change);
 };
+
 #endif __CREATURE_H__
